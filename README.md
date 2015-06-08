@@ -1,3 +1,3 @@
 # spin
-# niels is pro
-# eele is noob
+# eele is pro
+# niels is noob
