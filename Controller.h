@@ -12,6 +12,9 @@ class Controller {
 private:
 
 public:
+    Monitor monitor;
+    ServerHandler server;
+
     // Legs
     Leg leg1;
     Leg leg2;
