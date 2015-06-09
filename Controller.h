@@ -8,6 +8,9 @@
 
 #include "Leg.h"
 #include "Servo.h"
+#include "Monitor.h"
+#include "ServerHandler.h"
+
 class Controller {
 private:
 
