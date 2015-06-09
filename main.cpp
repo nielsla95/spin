@@ -1,8 +1,10 @@
-#include <iostream>
+#include <stdio.h>
+#include "Controller.h"
 
 using namespace std;
 
 int main() {
-    cout << "Dit is een spin!" << endl;
+    Controller controller;
+    getchar();
     return 0;
 }
