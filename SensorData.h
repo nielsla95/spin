@@ -7,7 +7,12 @@
 
 
 class SensorData {
+public:
+    int test = 10;
 
+    void setTest(int test) {
+        SensorData::test = test;
+    }
 };
 
 

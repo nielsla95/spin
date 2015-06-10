@@ -5,10 +5,12 @@
 #include <iostream>
 #include <functional>
 #include "Controller.h"
+#include <iostream>
 #include <thread>
 
-class thread;
-
+void aids(void){
+    std::cout << " aids"  << std::endl;
+}
 Controller::Controller() {
     state = State::WALK;
     lastState = State::UNDEFINED;
@@ -17,7 +19,11 @@ Controller::Controller() {
     bool isRunning = true;
     std::vector<int> test;
     WalkCommand walkCommand;
+    SensorData sensorData;
+    Monitor monitor;
 
+    //std::thread t1(aids);
+    std::thread monitorThread = std::thread(&Monitor::run,monitor, std::ref(sensorData));
 
     //std::vector<int> rotation;
 
@@ -31,8 +37,7 @@ Controller::Controller() {
     std::cout << "Controller started!" << std::endl;
 
     while (isRunning) {
-
-
+        std::cout << "aids: " << sensorData.test << std::endl;
         switch (state) {
             case State::DANCE:
 

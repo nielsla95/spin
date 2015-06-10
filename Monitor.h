@@ -6,13 +6,15 @@
 #define SPIN_MONITOR_H
 
 
-#include "sensorData.h"
+#include <functional>
+#include "SensorData.h"
 
 class Monitor {
 public:
 
     bool filter(); // todo: implement
-    sensorData get(); // todo: implement
+    SensorData get(); // todo: implement
+    void run(std::reference_wrapper<SensorData> sensorData);
 };
 
 
