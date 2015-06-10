@@ -6,7 +6,7 @@
 #define SPIN_SENSORDATA_H
 
 
-class sensorData {
+class SensorData {
 
 };
 
