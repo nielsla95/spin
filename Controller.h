@@ -8,10 +8,24 @@
 
 #include "Leg.h"
 #include "Servo.h"
+#include "Monitor.h"
+#include "ServerHandler.h"
+#include "ICommand.h"
+#include "WalkCommand.h"
+
+enum class State {UNDEFINED, WALK, DANCE, POLE, BALLOON};
+static const std::string stateNames[5] = {"UNDEFINED",  "WALK", "DANCE", "POLE", "BALLOON" };
+enum class MovementState {UNDEFINED, DEFAULT, SMALL, GAP};
+static const std::string movementStateNames[4] = {"UNDEFINED", "DEFAULT", "SMALL", "GAP" };
+
 class Controller {
 private:
 
 public:
+    State state;
+    State lastState;
+    MovementState movementState;
+    MovementState lastMovementState;
     Monitor monitor;
     ServerHandler server;
 
@@ -23,6 +37,8 @@ public:
     Leg leg5;
     Leg leg6;
     Controller();
+    State callCommand(State currentState, State lastState, std::reference_wrapper<WalkCommand> command, std::vector<int> vars);
+
 };
 
 #endif //SPIN_CONTROLLER_H

@@ -25,7 +25,6 @@ public:
         Servo::id = id;
     }
 
-
     int getDegree() const {
         return degree;
     }
