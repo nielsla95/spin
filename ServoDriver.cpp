@@ -36,7 +36,7 @@
 unsigned char Moving;
 int PresentPos;
 
-void PrintCommStatus(int CommStatus)
+void ServoDriver::PrintCommStatus(int CommStatus)
 {
     switch(CommStatus)
     {
@@ -70,7 +70,7 @@ void PrintCommStatus(int CommStatus)
     }
 }
 
-void PrintErrorCode()
+void ServoDriver::PrintErrorCode()
 {
     if(dxl_get_rxpacket_error(ERRBIT_VOLTAGE) == 1)
         printf("Input voltage error!\n");
@@ -94,29 +94,12 @@ void PrintErrorCode()
         printf("Instruction code error!\n");
 }
 
-void ServoDriver::init()
-{
-    int baudnum = 1;
-    int deviceIndex = 0;
-    if(dxl_initialize(deviceIndex, baudnum) == 0)
-    {
-        printf("Faild to open dynamixel \n");
-        printf("Press enter to terminate \n");
-        getchar();
-        //return 0;
-    }
-    else
-    {
-        //printf("Succeed to open dynamixel");
-    }
-}
-
-void doOne(int num, int GoalPos, int speed){
+void ServoDriver::doOne(int num, int GoalPos, int speed){
     dxl_write_word( num, P_GOAL_SPEED_L, speed);
     dxl_write_word( num, P_GOAL_POSITION_L, GoalPos );
 }
 
-void init()
+void ServoDriver::init()
 {
     int baudnum = 1;
     int deviceIndex = 0;
@@ -133,7 +116,7 @@ void init()
     }
 }
 
-void moveYourLegs(int PS[][18], int numberOfPositions)
+void ServoDriver::moveYourLegs(int PS[][18], int numberOfPositions)
 {
 
 

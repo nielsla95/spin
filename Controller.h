@@ -12,7 +12,6 @@
 #include "Commands/ICommand.h"
 #include "Commands/WalkCommand.h"
 #include "Models/Leg.h"
-#include "Movements/DefaultMovement.h"
 #include "ServoDriver.h"
 #include "BluetoothHandler.h"
 
@@ -27,15 +26,8 @@ public:
     State state;
     State lastState;
 
-    // Legs
-    Leg leg1;
-    Leg leg2;
-    Leg leg3;
-    Leg leg4;
-    Leg leg5;
-    Leg leg6;
     Controller();
-    State callCommand(State currentState, State lastState, ICommand *command, std::vector<int> vars);
+    State callCommand(State currentState, State lastState, ICommand *command);
 };
 
 #endif //SPIN_CONTROLLER_H

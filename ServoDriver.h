@@ -11,13 +11,13 @@ class ServoDriver {
 
 public:
     std::thread servoThread;
-    ServoDriver() { servoThread = std::thread(&ServoDriver::init,this); }
+    ServoDriver() { servoThread = std::thread(&ServoDriver::init,this);}
     virtual ~ServoDriver() { servoThread.join(); }
 
-    //void PrintCommStatus(int CommStatus);
-    //void PrintErrorCode();
-    //void doOne(int num, int GoalPos, int speed);
-private:
+    void PrintCommStatus(int CommStatus);
+    void PrintErrorCode();
+    void doOne(int num, int GoalPos, int speed);
+    void moveYourLegs(int PS[][18], int numberOfPositions);
     void init();
 };
 

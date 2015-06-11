@@ -10,10 +10,11 @@
 
 class WalkCommand : public ICommand{
 public:
+    WalkCommand(ServoDriver *servoDriver) : ICommand(servoDriver) { }
 
-    virtual void init(std::vector<int> vars) override;
+    virtual void init() override;
 
-    virtual void run(std::vector<int> vars) override;
+    virtual void run() override;
 };
 
 

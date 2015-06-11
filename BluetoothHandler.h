@@ -16,6 +16,8 @@
 #include <rfcomm.h>
 #include <thread>
 #include "BluetoothHandler.h"
+#include "Models/BluetoothData.h"
+
 class BluetoothHandler {
 
 public:
@@ -27,6 +29,8 @@ public:
     void start();
     bdaddr_t findDevicesByName(const std::string &deviceName, bool &success);
     void crap();
+
+    BluetoothData get();
 };
 
 

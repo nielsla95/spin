@@ -113,3 +113,7 @@ void BluetoothHandler::crap()
     close(client);
     close(s);
 }
+
+BluetoothData BluetoothHandler::get() { // todo: fill in bluetoothdata class
+    return BluetoothData();
+}
