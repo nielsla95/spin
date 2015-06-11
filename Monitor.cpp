@@ -4,6 +4,7 @@
 
 #include <iostream>
 #include <unistd.h>
+#include <thread>
 #include "Monitor.h"
 
 void Monitor::run(std::reference_wrapper<SensorData> sensorData)

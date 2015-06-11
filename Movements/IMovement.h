@@ -1,5 +1,5 @@
 //
-// Created by eele on 10-6-2015.
+// Created by nieeles van der Boersma on 10-6-2015.
 //
 
 #ifndef SPIN_IMOVEMENT_H
@@ -7,12 +7,12 @@
 
 #include <vector>
 class IMovement {
-private:
+public:
     // List with 18*x servoPos
     std::vector<int> servoPos;
 
-    virtual void init();
-    virtual void move();
+    virtual void init()=0;
+    virtual void move()=0;
 };
 
 

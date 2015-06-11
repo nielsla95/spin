@@ -5,8 +5,20 @@
 #ifndef SPIN_SERVODRIVER_H
 #define SPIN_SERVODRIVER_H
 
+#include <thread>
+
 class ServoDriver {
 
+public:
+    std::thread servoThread;
+    ServoDriver() { servoThread = std::thread(&ServoDriver::init,this); }
+    virtual ~ServoDriver() { servoThread.join(); }
+
+    void PrintCommStatus(int CommStatus);
+    void PrintErrorCode();
+    void doOne(int num, int GoalPos, int speed);
+private:
+    void init();
 };
 
 
