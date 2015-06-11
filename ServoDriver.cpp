@@ -11,6 +11,7 @@
 #include <termio.h>
 #include <iostream>
 #include <thread>
+#include <utime.h>
 #include "dynamixel.h"
 //#include <dxl_hal.h>
 
@@ -35,7 +36,7 @@
 unsigned char Moving;
 int PresentPos;
 
-void ServoDriver::PrintCommStatus(int CommStatus)
+void PrintCommStatus(int CommStatus)
 {
     switch(CommStatus)
     {
@@ -69,7 +70,7 @@ void ServoDriver::PrintCommStatus(int CommStatus)
     }
 }
 
-void ServoDriver::PrintErrorCode()
+void PrintErrorCode()
 {
     if(dxl_get_rxpacket_error(ERRBIT_VOLTAGE) == 1)
         printf("Input voltage error!\n");
@@ -110,7 +111,113 @@ void ServoDriver::init()
     }
 }
 
-void ServoDriver::doOne(int num, int GoalPos, int speed){
+void doOne(int num, int GoalPos, int speed){
     dxl_write_word( num, P_GOAL_SPEED_L, speed);
     dxl_write_word( num, P_GOAL_POSITION_L, GoalPos );
+}
+
+void init()
+{
+    int baudnum = 1;
+    int deviceIndex = 0;
+    if(dxl_initialize(deviceIndex, baudnum) == 0)
+    {
+        printf("Faild to open dynamixel");
+        printf("Press enter to terminate \n");
+        getchar();
+        //return 0;
+    }
+    else
+    {
+        //printf("Succeed to open dynamixel");
+    }
+}
+
+void moveYourLegs(int PS[][18], int numberOfPositions)
+{
+
+
+    int GoalPos;
+    int servoid;
+    int tmp;
+    int i;
+    int j;
+
+    // magic stuff
+    for(i = 0  ;i < numberOfPositions ;i++)
+    {
+        int servosnotmoving = 0;
+//			printf(" %d" , i);
+        {
+            servoid = i+1;
+            //	GoalPos = PS[i][j];
+            /*		if(i >= 1)
+                        tmp = i -1;
+                    else
+                        tmp = numberOfPositions - 1 ;
+
+                */
+            Moving = dxl_read_byte(servoid, P_MOVING);
+            printf("MOVING? %d\n", Moving);
+            //usleep(1000);
+
+            if(Moving == 0){
+                printf("not moving \n");
+                PresentPos = dxl_read_word(servoid, P_PRESENT_POSITION_L);
+                if((PresentPos <= PS[tmp][j] + 5 && PresentPos >= PS[tmp][j] - 5) || i == 0){
+                    Moving = dxl_read_byte( servoid, P_MOVING );
+                    //printf("go to next");
+                    doOne(servoid, GoalPos, P_SPEED);
+                    servosnotmoving++;
+
+                    Moving = dxl_read_byte( servoid, P_MOVING );
+                    printf("Servo not moving is %d\n", servosnotmoving);
+                }
+            }
+
+            //doOne(servoid, GoalPos, 100);
+            //Moving = dxl_read_byte( servoid, P_MOVING );
+            //PresentPos = dxl_read_word( servoid, P_PRESENT_POSITION_L );
+            //printf("Servo %d = %d and is going to be %d %d\n", servoid, PresentPos, GoalPos, Moving);
+            PrintErrorCode();
+        }
+        servosnotmoving = 18;
+        float Speed;
+        if(servosnotmoving ==18){
+            for(j = 0  ;j < 18 ;j++)
+            {	float ExtraSpeed = ((GoalPos-PresentPos)/100);
+                printf("ExtraSpeed = %f\n", ExtraSpeed);
+                servoid = j+1;
+                GoalPos = PS[i][j];
+                //P_SPEED = P_SPEED + ExtraSpeed;
+
+                Speed = (float)P_SPEED*ExtraSpeed;
+                if (Speed<=0){
+                    if (Speed == 0) Speed = 50;
+                    else
+                        Speed =0-Speed;
+
+                }
+
+                printf("Servo %d Speed is: %f\n",j, P_SPEED);
+
+
+                doOne(servoid, GoalPos, (P_SPEED));
+                //if(j %3 == 0)
+                //{
+                //getchar();
+                //}
+                sleep(1);
+            }
+            servosnotmoving = 0;
+//				usleep(500000);
+        }
+        else{
+            i--;
+        }
+        //usleep(1000);
+        getchar();
+    }
+
+
 }

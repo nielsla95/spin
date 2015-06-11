@@ -14,9 +14,9 @@ public:
     ServoDriver() { servoThread = std::thread(&ServoDriver::init,this); }
     virtual ~ServoDriver() { servoThread.join(); }
 
-    void PrintCommStatus(int CommStatus);
-    void PrintErrorCode();
-    void doOne(int num, int GoalPos, int speed);
+    //void PrintCommStatus(int CommStatus);
+    //void PrintErrorCode();
+    //void doOne(int num, int GoalPos, int speed);
 private:
     void init();
 };
