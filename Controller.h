@@ -6,17 +6,19 @@
 #define SPIN_CONTROLLER_H
 
 
-#include "Leg.h"
-#include "Servo.h"
+#include "Models/Servo.h"
 #include "Monitor.h"
 #include "ServerHandler.h"
-#include "ICommand.h"
-#include "WalkCommand.h"
+#include "Commands/ICommand.h"
+#include "Commands/WalkCommand.h"
+#include "Models/Leg.h"
+#include "Movements/DefaultMovement.h"
+#include "ServoDriver.h"
+#include "BluetoothHandler.h"
 
-enum class State {UNDEFINED, WALK, DANCE, POLE, BALLOON};
-static const std::string stateNames[5] = {"UNDEFINED",  "WALK", "DANCE", "POLE", "BALLOON" };
-enum class MovementState {UNDEFINED, DEFAULT, SMALL, GAP};
-static const std::string movementStateNames[4] = {"UNDEFINED", "DEFAULT", "SMALL", "GAP" };
+enum class State {UNDEFINED, WALK, WALK_SMALL, DANCE, POLE, BALLOON, GAP};
+
+static const std::string stateNames[7] = {"UNDEFINED", "WALK", "WALK_SMALL","DANCE", "POLE", "BALLOON", "GAP" };
 
 class Controller {
 private:
@@ -24,10 +26,6 @@ private:
 public:
     State state;
     State lastState;
-    MovementState movementState;
-    MovementState lastMovementState;
-    Monitor monitor;
-    ServerHandler server;
 
     // Legs
     Leg leg1;
@@ -37,8 +35,7 @@ public:
     Leg leg5;
     Leg leg6;
     Controller();
-    State callCommand(State currentState, State lastState, std::reference_wrapper<WalkCommand> command, std::vector<int> vars);
-
+    State callCommand(State currentState, State lastState, ICommand *command, std::vector<int> vars);
 };
 
 #endif //SPIN_CONTROLLER_H

@@ -11,7 +11,7 @@
 
 class ICommand {
 public:
-    //std::vector<int> servoPos;
+    std::vector<int> servoPos;
 
     virtual void init(std::vector<int> vars)=0;
 

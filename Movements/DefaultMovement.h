@@ -6,10 +6,14 @@
 #define SPIN_DEFAULTMOVEMENT_H
 
 
+#include <iostream>
 #include "IMovement.h"
 
-class DefaultMovement : IMovement{
+class DefaultMovement : public IMovement{
+public:
+    virtual void init() override;
 
+    virtual void move() override;
 };
 
 

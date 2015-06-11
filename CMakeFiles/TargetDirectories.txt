@@ -1,0 +1,1 @@
+/home/niels/ClionProjects/Spin/CMakeFiles/Spin.dir
