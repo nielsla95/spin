@@ -14,7 +14,7 @@ class ICommand {
 public:
     ICommand(ServoDriver *servoDriver) : servoDriver(servoDriver) { }
 
-    std::vector<int> servoPos;
+    std::vector<std::vector<int>> servoPos;
     ServoDriver *servoDriver;
 
     virtual void init()=0;

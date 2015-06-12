@@ -6,6 +6,7 @@
 #define SPIN_SERVODRIVER_H
 
 #include <thread>
+#include <vector>
 
 class ServoDriver {
 
@@ -17,7 +18,7 @@ public:
     void PrintCommStatus(int CommStatus);
     void PrintErrorCode();
     void doOne(int num, int GoalPos, int speed);
-    void moveYourLegs(int PS[][18], int numberOfPositions);
+    bool send(std::vector<int> ps);
     void init();
 };
 
