@@ -5,11 +5,7 @@
 #include <iostream>
 #include <functional>
 #include "Controller.h"
-#include <thread>
 
-void aids(void){
-    std::cout << " aids"  << std::endl;
-}
 Controller::Controller() {
     state = State::WALK;
     lastState = State::UNDEFINED;
@@ -18,7 +14,8 @@ Controller::Controller() {
     SensorData sensorData;
     //Monitor monitor(std::ref(sensorData));
     ServerHandler server;
-    BluetoothHandler bluetoothHandler;
+    ControlData controlData;
+    BluetoothHandler bluetoothHandler(std::ref(controlData));
     ServoDriver servoDriver;
 
     WalkCommand walkCommand(&servoDriver);

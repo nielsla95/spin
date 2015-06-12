@@ -19,6 +19,7 @@ public:
     void PrintErrorCode();
     void doOne(int num, int GoalPos, int speed);
     bool send(std::vector<int> ps);
+
     void init();
 };
 

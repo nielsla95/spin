@@ -16,21 +16,17 @@
 #include <rfcomm.h>
 #include <thread>
 #include "BluetoothHandler.h"
-#include "Models/BluetoothData.h"
+#include "Models/ControlData.h"
 
 class BluetoothHandler {
 
 public:
     std::thread bluetoothHandlerThread;
 
-    BluetoothHandler() { bluetoothHandlerThread = std::thread(&BluetoothHandler::start,this); }
+    BluetoothHandler(ControlData &controlData) { bluetoothHandlerThread = std::thread(&BluetoothHandler::listen,this,std::ref(controlData)); }
     virtual ~BluetoothHandler() { bluetoothHandlerThread.join(); }
 
-    void start();
-    bdaddr_t findDevicesByName(const std::string &deviceName, bool &success);
-    void crap();
-
-    BluetoothData get();
+    void listen(ControlData &controlData);
 };
 
 
