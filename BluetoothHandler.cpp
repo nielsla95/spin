@@ -10,12 +10,12 @@ void BluetoothHandler::start()
 {
     std::cout << "Looking for bluetooth controller! O.o" << std::endl;
 
-    std::string iets = "groep1";
+    std::string name = "groep1";
 
     bool connected = false;
     bdaddr_t controllerDevice;
     while(!connected){
-        controllerDevice = findDevicesByName("groep1", connected);
+        controllerDevice = findDevicesByName(name, connected);
         if(!connected)
             std::cout << "Bluetooth controller wasn't found, retry..." << std::endl;
     }
