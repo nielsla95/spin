@@ -1,2 +1,2 @@
 all:
-	g++ -pthread *.cpp Commands/*.cpp Models/*.cpp Movements/*.cpp -std=c++11 -lbluetooth
+	g++ -pthread dynamixel.h dynamixel.c dxl_hal.c dxl_hal.h *.cpp Commands/*.cpp  -lbluetooth -std=c++11
