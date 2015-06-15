@@ -7,7 +7,7 @@
 #include "Controller.h"
 
 Controller::Controller() {
-    state = State::POLE;
+    state = State::WALK_SMALL;
     lastState = State::UNDEFINED;
     bool isRunning = true;
 
@@ -21,13 +21,17 @@ Controller::Controller() {
 
     WalkCommand walkCommand(&servoDriver);
     PoleCommand poleCommand(&servoDriver);
+    GateCommand gateCommand(&servoDriver);
+    DanceCommand danceCommand(&servoDriver);
+    BalloonCommand balloonCommand(&servoDriver);
+    GapCommand gapCommand(&servoDriver);
 
     std::cout << "Controller started!" << std::endl;
 
     while (isRunning) {
         switch (state) {
             case State::DANCE:
-
+                this->lastState = callCommand(state, lastState, &danceCommand);
                 break;
             case State::POLE:
                 this->lastState = callCommand(state, lastState, &poleCommand);
@@ -36,13 +40,13 @@ Controller::Controller() {
                 this->lastState = callCommand(state, lastState, &walkCommand);
                 break;
             case State::WALK_SMALL:
-
+                this->lastState = callCommand(state, lastState, &gateCommand);
                 break;
             case State::BALLOON:
-
+                this->lastState = callCommand(state, lastState, &balloonCommand);
                 break;
             case State::GAP:
-
+                this->lastState = callCommand(state, lastState, &gapCommand);
                 break;
             default:
                 std::cout << "U r a wizzart, how u get here? Bud how you leave here!??" << std::endl;
