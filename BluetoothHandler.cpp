@@ -46,7 +46,6 @@ void BluetoothHandler::listen(ControlData &controlData)
                 buf[len]=0;
                 test += buf;
                 controlData.set(test);
-                std::cout << test;
             }
         }while(len>0);
 

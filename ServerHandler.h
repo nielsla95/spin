@@ -5,6 +5,9 @@
 #ifndef SPIN_SERVERHANDLER_H
 #define SPIN_SERVERHANDLER_H
 
+#include <websocketpp/config/asio_no_tls.hpp>
+
+#include <websocketpp/server.hpp>
 
 class ServerHandler {
 private:
