@@ -145,6 +145,14 @@ bool ServoDriver::send(std::vector<int> goalPos) {
     return true;
 }
 
+void ServoDriver::sendMultiple(std::vector<std::vector<int>> ps)
+{
+    for (int i = 0; i < ps.size(); ++i) {
+        std::cout << ps[i] << endl;
+        send(ps[i]);
+    }
+}
+
 void ServoDriver::init()
 {
     int baudnum = 1;
