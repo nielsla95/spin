@@ -7,7 +7,7 @@
 #include "Controller.h"
 
 Controller::Controller() {
-    state = State::WALK_SMALL;
+    state = State::WALK;
     lastState = State::UNDEFINED;
     bool isRunning = true;
 

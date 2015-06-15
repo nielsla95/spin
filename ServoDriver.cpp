@@ -104,9 +104,9 @@ bool ServoDriver::send(std::vector<int> goalPos) {
 
     bool inPosition = false;
     for(int i =1; i <= 18; i++){
-        speed = 0;
+        speed = 200;
         presentPos.push_back(dxl_read_word(i, P_PRESENT_POSITION_L));
-        usleep(10000);
+        usleep(1000);
         speedCorrection = ((goalPos.at(i-1)-presentPos[i])/1024);
         // absolute waarde
         if(speedCorrection<0) speedCorrection *= -1;
@@ -117,9 +117,9 @@ bool ServoDriver::send(std::vector<int> goalPos) {
 
     for(int i=1;i<=18; i++){
         dxl_write_word( i, P_GOAL_SPEED_L, speeds.at(i-1));
-        usleep(10000);
+        usleep(1000);
         dxl_write_word( i, P_GOAL_POSITION_L, goalPos.at(i-1));
-        usleep(10000);
+        usleep(1000);
     }
 
     int tmp;
@@ -129,7 +129,7 @@ bool ServoDriver::send(std::vector<int> goalPos) {
 
         for(int i =1; i <= 18; i++){
             tmp = dxl_read_word(i, P_PRESENT_POSITION_L);
-            if((tmp >= goalPos.at(i-1) - 35) && (tmp <= goalPos.at(i-1) + 35)){//zet de inpositie boolean op true, wacht tot de servo' s op het eindpunt zijn.
+            if((tmp >= goalPos.at(i-1) - 100) && (tmp <= goalPos.at(i-1) + 100)){//zet de inpositie boolean op true, wacht tot de servo' s op het eindpunt zijn.
                 inPos++;
             }
         }
