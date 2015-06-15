@@ -7,8 +7,8 @@
 #include "Controller.h"
 
 Controller::Controller() {
-    state = State::WALK;
-    lastState = State::UNDEFINED;
+    state = State::MENU;
+    lastState = State::GAP; //Dit doen we om de init aan te roepen bij het opstarten
     bool isRunning = true;
 
     SensorData sensorData;
@@ -26,13 +26,13 @@ Controller::Controller() {
 
     while (isRunning) {
         switch (state) {
-            case State::DANCE:
+            case State::GRINDBAK:
 
                 break;
-            case State::POLE:
+            case State::LIMBO:
 
                 break;
-            case State::WALK:
+            case State::MENU:
                 this->lastState = callCommand(state, lastState, &walkCommand);
                 break;
             default:

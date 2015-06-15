@@ -15,9 +15,9 @@
 #include "ServoDriver.h"
 #include "BluetoothHandler.h"
 
-enum class State {UNDEFINED, WALK, WALK_SMALL, DANCE, POLE, BALLOON, GAP};
+enum class State { MENU, LIMBO, GRINDBAK, RACE, DANS, GAP, PRIK, PAALDANS, PAREN};
 
-static const std::string stateNames[7] = {"UNDEFINED", "WALK", "WALK_SMALL","DANCE", "POLE", "BALLOON", "GAP" };
+static const std::string stateNames[9] = { "MENU", "LIMBO", "GRINDBAK", "RACE", "DANS", "GAP", "PRIK", "PAALDANS", "PAREN" };
 
 class Controller {
 private:
