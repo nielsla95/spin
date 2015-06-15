@@ -2,17 +2,42 @@
 // Created by eele on 10-6-2015.
 //
 
-#include <iostream>
-#include <unistd.h>
 #include "WalkCommand.h"
 
+void WalkCommand::init()
+{
 
-void WalkCommand::init(std::vector<int> vars) {
-    std::cout << "WalkCommand Init" << std::endl;
+    std::vector<std::vector<int>> servoPos =
+            {
+                {442,713,997,419,715,1010,581,713,997,442,310,997,419,308,1010,581,310,997},
+                {442,772,1009,419,715,1010,581,772,1009,442,310,997,419,242,1023,581,310,997},
+                {380,701,956,419,715,1010,502,715,1009,442,310,997,497,311,994,581,310,997}
+            };
+
 }
 
-//std::vector<int> vars
-void WalkCommand::run(std::vector<int> vars) {
-    std::cout << "WalkCommand Run" << std::endl;
-    sleep(1);
-}
+void WalkCommand::run()
+{
+    std::vector<std::vector<int>> servoPos =
+            {
+                    {380,701,956,419,781,1023,502,715,1009,442,251,1009,497,311,994,581,251,1009},
+                    {442,713,997,419,781,1023,581,713,997,442,251,1009,419,308,1010,581,251,1009},
+                    {521,715,1009,419,781,1023,643,701,956,442,251,1009,340,311,994,581,251,1009},
+                    {521,715,1009,340,712,994,643,701,956,521,308,1009,340,311,994,643,322,956},
+                    {442,772,1009,340,712,994,581,772,1009,521,308,1009,419,242,1023,643,322,956},
+                    {442,772,1009,419,715,1010,581,772,1009,442,310,997,419,242,1023,581,310,997},
+                    {442,772,1009,497,712,994,581,772,1009,380,322,956,419,242,1023,502,308,1009},
+                    {380,701,956,497,712,994,502,715,1009,380,322,956,497,311,994,502,308,1009}
+            };
+
+    //this->servoDriver->send(servoPos.at(2));
+
+    //bool (ServoDriver::*fptr) (std::vector<int>) = &ServoDriver::send;
+
+//    ServoDriver *driver = servoDriver;
+//    driver->send(servoPos.at(2));
+
+    /*bool (*fptr) (std::vector<int>) = &ServoDriver::send;
+    (*fptr)(servoPos[0]);*/
+};
+

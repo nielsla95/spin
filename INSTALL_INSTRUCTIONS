@@ -1,0 +1,4 @@
+sudo apt-get install libbluetooth-dev bluez-utils
+
+
+LINUX eerst connecten(pairen met controller)

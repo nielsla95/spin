@@ -8,14 +8,18 @@
 
 #include <vector>
 #include <iostream>
+#include "../ServoDriver.h"
 
 class ICommand {
 public:
-    std::vector<int> servoPos;
+    ICommand(ServoDriver *servoDriver) : servoDriver(servoDriver) { }
 
-    virtual void init(std::vector<int> vars)=0;
+    std::vector<std::vector<int>> servoPos;
+    ServoDriver *servoDriver;
 
-    virtual void run(std::vector<int> vars)=0;
+    virtual void init()=0;
+
+    virtual void run()=0;
 };
 
 
