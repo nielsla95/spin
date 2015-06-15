@@ -30,7 +30,7 @@ void WalkCommand::run()
                     {380,701,956,497,712,994,502,715,1009,380,322,956,497,311,994,502,308,1009}
             };
 
-    this->servoDriver->sendMultiple(servoPos);
+    //this->servoDriver->send(servoPos.at(2));
 
     //bool (ServoDriver::*fptr) (std::vector<int>) = &ServoDriver::send;
 
