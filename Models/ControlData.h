@@ -30,30 +30,25 @@ public:
     int z;
     int speed;
     int mode;
-    bool killSwitch; // todo: mode per int aangeven
+    bool killSwitch;
     int balloon; // 0 = niks, 1 = blue
 
     ControlData() {
         x = 0;
         y = 0;
         z = 0;
-        speed = 100;
+        speed = 50;
         mode = 0;
         killSwitch = false;
         balloon = 0;
-        std::cout << "setting controldata" << std::endl;
-        set("<516,482,370,473,6,1,0>");
     }
 
-    void set(const std::string &input) // todo: convert input string to seperated variables
+    void set(const std::string &input)
     {
         // if string is validate assign items to member variables
         if(validate(input))
         {
-            std::cout << "controldata is valid :D" << std::endl;
-
             std::string newInput = input.substr(1, input.length() - 2);
-            std::cout << "newInput: " << newInput << std::endl;
             std::stringstream ss(newInput);
 
             std::string token;
@@ -89,13 +84,17 @@ public:
                 }
                 argCounter++;
             }
-            std::cout << "speed: " << speed << std::endl;
         }
+        else
+            std::cout << "wrong bluetooth data: " << input << std::endl;
     }
 
     // validate function
-    bool validate(const std::string &input)
+    bool validate(const std::string &rawInput)
     {
+        int endCharIndex = rawInput.find('>');
+        std::string input = rawInput.substr(0, endCharIndex+1);
+
         // check begin and end characters
         if(input[0] != '<' || input[input.length()-1] !='>') return false;
 
@@ -104,6 +103,7 @@ public:
             if(input[i]==',') commaCounter++;
         }
         return commaCounter == 6;
+        return false;
     }
 };
 

@@ -7,11 +7,7 @@
 #include <thread>
 #include "Monitor.h"
 
-void Monitor::run(std::reference_wrapper<SensorData> sensorData)
+void Monitor::listen(SensorData &sensorData)
 {
-    while(true)
-    {
-        sensorData.get().setTest(rand());
-        sleep(2);
-    }
+
 }

@@ -15,7 +15,7 @@ void BluetoothHandler::listen(ControlData &controlData)
     int s, status, len;
     char dest[18] = "00:0B:53:13:15:3C";
     char buf[2048];
-    std::string test;
+    std::string output;
 
     // allocate a socket
     s = socket(AF_BLUETOOTH, SOCK_STREAM, BTPROTO_RFCOMM);
@@ -44,8 +44,9 @@ void BluetoothHandler::listen(ControlData &controlData)
             len = read(s, buf, sizeof buf);
             if( len>0 ) {
                 buf[len]=0;
-                test += buf;
-                controlData.set(test);
+                output += buf;
+                std::cout << output << std::endl;
+                controlData.set(output);
             }
         }while(len>0);
 

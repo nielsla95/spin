@@ -147,10 +147,10 @@ bool ServoDriver::send(std::vector<int> goalPos) {
 
 void ServoDriver::sendMultiple(std::vector<std::vector<int>> ps)
 {
-    for (int i = 0; i < ps.size(); ++i) {
-        std::cout << ps[i] << endl;
-        send(ps[i]);
-    }
+    /*for (int i = 0; i < ps.size(); ++i) {
+        std::cout << ps[i] << std::endl;
+        send(ps.at(i));
+    }*/
 }
 
 void ServoDriver::init()

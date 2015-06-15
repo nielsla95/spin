@@ -13,13 +13,11 @@
 class Monitor {
 public:
     std::thread monitorThread;
-    Monitor(std::reference_wrapper<SensorData> sensorData){monitorThread = std::thread(&Monitor::run,this, std::ref(sensorData)); };
+    Monitor(SensorData &sensorData){monitorThread = std::thread(&Monitor::listen,this, std::ref(sensorData)); };
 
     virtual ~Monitor() { monitorThread.join(); }
 
-    bool filter(); // todo: implement
-    SensorData get(); // todo: implement
-    void run(std::reference_wrapper<SensorData> sensorData);
+    void listen(SensorData &sensorData);
 };
 
 
