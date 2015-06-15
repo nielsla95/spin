@@ -3,7 +3,8 @@
 
 using namespace std;
 
-int main() {
+int main()
+{
     Controller controller;
     getchar();
     return 0;
