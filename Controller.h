@@ -11,6 +11,7 @@
 #include "ServerHandler.h"
 #include "Commands/ICommand.h"
 #include "Commands/WalkCommand.h"
+#include "Commands/PoleCommand.h"
 #include "Models/Leg.h"
 #include "ServoDriver.h"
 #include "BluetoothHandler.h"

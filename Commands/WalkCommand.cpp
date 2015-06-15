@@ -6,6 +6,7 @@
 
 void WalkCommand::init()
 {
+    std::cout << "walkcommand init" << std::endl;
 
     std::vector<std::vector<int>> servoPos =
             {
@@ -13,11 +14,13 @@ void WalkCommand::init()
                 {442,772,1009,419,715,1010,581,772,1009,442,310,997,419,242,1023,581,310,997},
                 {380,701,956,419,715,1010,502,715,1009,442,310,997,497,311,994,581,310,997}
             };
+    this->servoDriver->sendMultiple(servoPos);
 
 }
 
 void WalkCommand::run()
 {
+    //std::cout << "walkcommand run" << std::endl;
     std::vector<std::vector<int>> servoPos =
             {
                     {380,701,956,419,781,1023,502,715,1009,442,251,1009,497,311,994,581,251,1009},
@@ -30,14 +33,6 @@ void WalkCommand::run()
                     {380,701,956,497,712,994,502,715,1009,380,322,956,497,311,994,502,308,1009}
             };
 
-    //this->servoDriver->send(servoPos.at(2));
-
-    //bool (ServoDriver::*fptr) (std::vector<int>) = &ServoDriver::send;
-
-//    ServoDriver *driver = servoDriver;
-//    driver->send(servoPos.at(2));
-
-    /*bool (*fptr) (std::vector<int>) = &ServoDriver::send;
-    (*fptr)(servoPos[0]);*/
+    this->servoDriver->sendMultiple(servoPos);
 };
 
