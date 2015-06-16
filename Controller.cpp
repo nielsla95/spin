@@ -7,6 +7,7 @@
 #include "Controller.h"
 
 Controller::Controller() {
+    ControlData controlData;
     state = State::MENU;
     lastState = State::GAP; //Dit doen we om de init aan te roepen bij het opstarten
     bool isRunning = true;
@@ -14,12 +15,12 @@ Controller::Controller() {
     SensorData sensorData;
     Monitor monitor(std::ref(sensorData));
 
-    ControlData controlData;
+
     BluetoothHandler bluetoothHandler(std::ref(controlData));
 
     ServoDriver servoDriver;
 
-    ServerHandler server(std::ref(sensorData));
+    ServerHandler server(std::ref(sensorData),std::ref(controlData));
     WalkCommand walkCommand(&servoDriver);
 
     std::cout << "Controller started!" << std::endl;

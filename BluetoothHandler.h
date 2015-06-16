@@ -23,7 +23,11 @@ class BluetoothHandler {
 public:
     std::thread bluetoothHandlerThread;
 
-    BluetoothHandler(ControlData &controlData) { bluetoothHandlerThread = std::thread(&BluetoothHandler::listen,this,std::ref(controlData)); }
+    BluetoothHandler(ControlData &controlData)
+    {
+        bluetoothHandlerThread = std::thread(&BluetoothHandler::listen,this,std::ref(controlData));
+    }
+
     virtual ~BluetoothHandler() { bluetoothHandlerThread.join(); }
 
     void listen(ControlData &controlData);

@@ -2,11 +2,11 @@
 // Created by root on 11-6-15.
 //
 
-#ifndef SPIN_BLUETOOTHDATA_H
-#define SPIN_BLUETOOTHDATA_H
+#ifndef SPIN_CONTROLDATA_H
+#define SPIN_CONTROLDATA_H
 
 
-#include "../Controller.h"
+#include <sstream>
 
 class ControlData {
 /*
@@ -105,9 +105,8 @@ public:
             if(input[i]==',') commaCounter++;
         }
         return commaCounter == 6;
-        return false;
     }
 };
 
 
-#endif //SPIN_BLUETOOTHDATA_H
+#endif //SPIN_CONTROLLERDATA_H

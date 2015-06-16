@@ -5,22 +5,25 @@
 #ifndef SPIN_SERVERHANDLER_H
 #define SPIN_SERVERHANDLER_H
 
-#include <websocketpp/config/asio_no_tls.hpp>
-
-#include <websocketpp/server.hpp>
 #include "Models/SensorData.h"
+#include "AppServer.h"
+#include "Models/ControlData.h"
 #include <thread>
 
 class ServerHandler {
 private:
-
 public:
+    ServerHandler(SensorData &sensorData, ControlData &controlData) {
+        serverThread = std::thread(&ServerHandler::start,this);
+        dataToJSON(sensorData, controlData);
+    }
     std::thread serverThread;
-
-    ServerHandler(SensorData &sensorData) { serverThread = std::thread(&ServerHandler::start,this,std::ref(sensorData)); }
+    AppServer server;
     virtual ~ServerHandler() { serverThread.join(); }
 
-    void start(SensorData &sensorData);
+    void start();
+
+    void dataToJSON(SensorData &sensorData, ControlData &controlData);
 };
 
 

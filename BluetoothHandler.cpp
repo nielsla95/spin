@@ -3,7 +3,7 @@
 //
 
 #include <iostream>
-#include <string.h>
+
 #include "BluetoothHandler.h"
 
 // MacAddress: 00:0B:53:13:15:3C

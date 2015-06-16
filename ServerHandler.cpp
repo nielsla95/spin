@@ -4,63 +4,32 @@
 
 #include "ServerHandler.h"
 
-typedef websocketpp::server<websocketpp::config::asio> server;
-
-using websocketpp::lib::placeholders::_1;
-using websocketpp::lib::placeholders::_2;
-using websocketpp::lib::bind;
-
-// pull out the type of messages sent by our config
-typedef server::message_ptr message_ptr;
-
-// Define a callback to handle incoming messages
-void on_message(server* s, websocketpp::connection_hdl hdl, message_ptr msg) {
-    std::cout << "on_message called with hdl: " << hdl.lock().get()
-    << " and message: " << msg->get_payload()
-    << std::endl;
-
-    // check for a special command to instruct the server to stop listening so
-    // it can be cleanly exited.
-    if (msg->get_payload() == "stop-listening") {
-        s->stop_listening();
-        return;
-    }
-
-    try {
-        s->send(hdl, msg->get_payload(), msg->get_opcode());
-    } catch (const websocketpp::lib::error_code& e) {
-        std::cout << "Echo failed because: " << e
-        << "(" << e.message() << ")" << std::endl;
-    }
+void ServerHandler::start() {
+    server.run(9002);
 }
 
-void ServerHandler::start(SensorData &sensorData)
-{
-    // Create a server endpoint
-    server echo_server;
+void ServerHandler::dataToJSON(SensorData &sensorData, ControlData &controlData){
+    std::string result;
+    // convert to json string
 
-    try {
-        // Set logging settings
-        echo_server.set_access_channels(websocketpp::log::alevel::all);
-        echo_server.clear_access_channels(websocketpp::log::alevel::frame_payload);
+    result += "{";
+        result += "\"Sensor\":{";
+            result += "\"Voltage\":\"";
+            result += std::to_string(sensorData.voltage) + "\",";
+            result += "\"Ampere\":\"";
+            result += std::to_string(sensorData.ampere) + "\",";
+            result += "\"Temp\":\"";
+            result += std::to_string(sensorData.temp) + "\",";
+            result += "\"gyx\":\"";
+            result += std::to_string(sensorData.gyX) + "\",";
+            result += "\"gyy\":\"";
+            result += std::to_string(sensorData.gyY) + "\",";
+            result += "\"gyz\":\"";
+            result += std::to_string(sensorData.gyZ) + "\"";
+        result += "},";
 
-        // Initialize ASIO
-        echo_server.init_asio();
+    result += "};";
 
-        // Register our message handler
-        echo_server.set_message_handler(bind(&on_message,&echo_server,::_1,::_2));
-
-        // Listen on port 9002
-        echo_server.listen(9005);
-
-        // Start the server accept loop
-        echo_server.start_accept();
-
-        // Start the ASIO io_service run loop
-        echo_server.run();
-    } catch (websocketpp::exception const & e) {
-        std::cout << e.what() << std::endl;
-    } catch (...) {
-        std::cout << "other exception" << std::endl;
-    }
+    // send to server
+    server.setJsonData(result);
 }
