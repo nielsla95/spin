@@ -12,7 +12,7 @@ class ServoDriver {
 
 public:
     std::thread servoThread;
-    ServoDriver(){}; //{ servoThread = std::thread(&ServoDriver::init,this);}
+    ServoDriver(){};
     virtual ~ServoDriver() { servoThread.join(); }
 
     void PrintCommStatus(int CommStatus);

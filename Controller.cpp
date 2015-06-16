@@ -26,15 +26,20 @@ Controller::Controller() {
 
     while (isRunning) {
         switch (state) {
-            case State::GRINDBAK:
 
-                break;
-            case State::LIMBO:
-
-                break;
-            case State::MENU:
+            case State::MENU :
                 this->lastState = callCommand(state, lastState, &walkCommand);
                 break;
+
+            case State::LIMBO: break;
+            case State::GRINDBAK: break;
+            case State::RACE: break;
+            case State::DANS: break;
+            case State::GAP: break;
+            case State::PRIK: break;
+            case State::PAALDANS: break;
+            case State::PAREN: break;
+
             default:
                 std::cout << "U r a wizzart, how u get here? Bud how you leave here!??" << std::endl;
                 break;
