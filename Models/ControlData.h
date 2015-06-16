@@ -48,9 +48,11 @@ public:
         // if string is validate assign items to member variables
         if(validate(input))
         {
-            std::string newInput = input.substr(1, input.length() - 2);
-            std::stringstream ss(newInput);
+            std::string newInput = input.substr(1, input.length() - 1); // todo: crap
+            int endCharIndex = newInput.find('>');
+            newInput = newInput.substr(0, endCharIndex);
 
+            std::stringstream ss(newInput);
             std::string token;
             int argCounter = 1;
 

@@ -13,22 +13,26 @@
 #include <stdio.h>
 #include <string.h>
 
-#define BAUDRATE B38400
+#define BAUDRATE B9600
 #define MODEMDEVICE "/dev/ttyACM0"
 #define _POSIX_SOURCE 1 /* POSIX compliant source */
-#define FALSE 0
-#define TRUE 1
 
-volatile int STOP=FALSE;
+
 
 void Monitor::listen(SensorData &sensorData)
 {
-    int fd,c, res;
+    bool stop=false;
+    int fd,c, len;
     struct termios oldtio,newtio;
-    char buf[255];
+    char buf[2048];
+    len = 0;
+    std::string output="";
 
     fd = open(MODEMDEVICE, O_RDWR | O_NOCTTY );
-    if (fd <0) {perror(MODEMDEVICE); exit(-1); }
+    if (fd <0)
+    {
+        perror(MODEMDEVICE); return listen(sensorData);
+    }
 
     tcgetattr(fd,&oldtio); /* save current port settings */
 
@@ -41,17 +45,36 @@ void Monitor::listen(SensorData &sensorData)
     newtio.c_lflag = 0;
 
     newtio.c_cc[VTIME]    = 0;   /* inter-character timer unused */
-    newtio.c_cc[VMIN]     = 5;   /* blocking read until 5 chars received */
 
     tcflush(fd, TCIFLUSH);
     tcsetattr(fd,TCSANOW,&newtio);
 
+    while (true) {       /* loop for input */
+        len = read(fd, buf, sizeof(buf));   /* returns after 5 chars have been input */
+        buf[len] = 0;
+        output += buf;
 
-    while (STOP==FALSE) {       /* loop for input */
-        res = read(fd,buf,255);   /* returns after 5 chars have been input */
-        buf[res]=0;               /* so we can printf... */
-        printf(":%s:%d\n", buf, res);
-        if (buf[0]=='z') STOP=TRUE;
+        std::string fix = "";
+
+        int finalCommandIndex = 0;
+        for(int  i = 0; i < output.length(); i++)
+        {
+            if(output[i] == '<')
+                finalCommandIndex = i;
+        }
+
+        fix = output.substr(finalCommandIndex, output.length() - finalCommandIndex);
+
+//        std::cout << buf << std::endl;
+//        std::cout << "Nieuw" << std::endl;
+//        std::cout << fix << std::endl;
+
+        sensorData.set(fix);
+        usleep(1000000);
+        output = "";
+        if (fd <0)
+        {
+            perror(MODEMDEVICE); return listen(sensorData);
+        }
     }
-    tcsetattr(fd,TCSANOW,&oldtio);
 }

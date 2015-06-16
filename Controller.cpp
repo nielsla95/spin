@@ -12,7 +12,7 @@ Controller::Controller() {
     bool isRunning = true;
 
     SensorData sensorData;
-    //Monitor monitor(std::ref(sensorData));
+    Monitor monitor(std::ref(sensorData));
 
     ControlData controlData;
     BluetoothHandler bluetoothHandler(std::ref(controlData));
@@ -20,7 +20,7 @@ Controller::Controller() {
     ServoDriver servoDriver;
     servoDriver.init();
 
-    //ServerHandler server(std::ref(sensorData));
+    ServerHandler server(std::ref(sensorData));
     WalkCommand walkCommand(&servoDriver);
     PoleCommand poleCommand(&servoDriver);
     GapCommand gapCommand(&servoDriver);
