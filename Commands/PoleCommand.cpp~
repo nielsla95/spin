@@ -16,7 +16,6 @@ void PoleCommand::init()
 
 void PoleCommand::run()
 {
-    std::cout << "POLE RUN" << std::endl;
     std::vector<std::vector<int>> servoPos =
             {
                     {512,716,1013,419,576,980,512,716,1013,512,447,980,419,307,1013,512,447,980},

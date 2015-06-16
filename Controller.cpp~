@@ -7,8 +7,8 @@
 #include "Controller.h"
 
 Controller::Controller() {
-    state = State::MENU;
-    lastState = State::DANS; //Dit doen we om de init aan te roepen bij het opstarten
+    state = State::GAP;
+    lastState = State::MENU; //Dit doen we om de init aan te roepen bij het opstarten
     bool isRunning = true;
 
     SensorData sensorData;
