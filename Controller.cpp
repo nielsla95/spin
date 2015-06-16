@@ -19,7 +19,7 @@ Controller::Controller() {
 
     ServoDriver servoDriver;
 
-    ServerHandler server(std::ref(sensorData));
+    //ServerHandler server(std::ref(sensorData));
     WalkCommand walkCommand(&servoDriver);
 
     std::cout << "Controller started!" << std::endl;
