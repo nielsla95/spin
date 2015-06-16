@@ -12,14 +12,14 @@ Controller::Controller() {
     bool isRunning = true;
 
     SensorData sensorData;
-    //Monitor monitor(std::ref(sensorData));
+    Monitor monitor(std::ref(sensorData));
 
     ControlData controlData;
     BluetoothHandler bluetoothHandler(std::ref(controlData));
 
     ServoDriver servoDriver;
 
-    //ServerHandler server(std::ref(sensorData));
+    ServerHandler server(std::ref(sensorData));
     WalkCommand walkCommand(&servoDriver);
 
     std::cout << "Controller started!" << std::endl;

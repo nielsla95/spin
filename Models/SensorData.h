@@ -31,8 +31,6 @@ public:
         gyX = 0.00f;
         gyY = 0.00f;
         gyZ = 0.00f;
-        std::string testData = "<1,2.00,34,5,6,7.00>";
-        set(testData);
     }
 
     void set(const std::string &input)
@@ -40,8 +38,10 @@ public:
         // if string is validate assign items to member variables
         if(validate(input))
         {
-            std::string newInput = input; // todo: comment hier onder verwijderen als het niet meer nodig is
-            //std::string newInput = input.substr(1, input.length() - 2);
+            std::string newInput = input.substr(1, input.length() - 1); // todo: crap
+            int endCharIndex = newInput.find('>');
+            newInput = newInput.substr(0, endCharIndex);
+
             std::stringstream ss(newInput);
             std::string token;
             int argCounter = 1;
@@ -51,22 +51,22 @@ public:
                 switch(argCounter)
                 {
                     case 1:
-                        voltage = atof(token.c_str());
+                        voltage = std::stof(token.c_str());
                         break;
                     case 2:
-                        ampere = atof(token.c_str());
+                        ampere = std::stof(token.c_str());
                         break;
                     case 3:
-                        temp = atof(token.c_str());
+                        temp = std::stof(token.c_str());
                         break;
                     case 4:
-                        gyX = atof(token.c_str());
+                        gyX = std::stof(token.c_str());
                         break;
                     case 5:
-                        gyY = atof(token.c_str());
+                        gyY = std::stof(token.c_str());
                         break;
                     case 6:
-                        gyZ = atof(token.c_str());
+                        gyZ = std::stof(token.c_str());
                         break;
                     default:
                         break;
@@ -74,8 +74,9 @@ public:
                 argCounter++;
             }
         }
-        else
+        else{
             std::cout << "wrong sensor data: " << input << std::endl;
+        }
     }
 
     // validate function
@@ -91,8 +92,7 @@ public:
         for (int i = 1; i < input.length()-1; ++i) {
             if(input[i]==',') commaCounter++;
         }
-        return commaCounter == 5;
-        return false;
+        return commaCounter == 5;\
     }
 
 };
