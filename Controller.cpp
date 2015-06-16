@@ -12,7 +12,7 @@ Controller::Controller() {
     bool isRunning = true;
 
     SensorData sensorData;
-    Monitor monitor(std::ref(sensorData));
+    //Monitor monitor(std::ref(sensorData));
 
     ControlData controlData;
     BluetoothHandler bluetoothHandler(std::ref(controlData));
