@@ -27,9 +27,6 @@
 *.out
 *.app
 
-# fk die build folder
-/build
-
 # Covers JetBrains IDEs: IntelliJ, RubyMine, PhpStorm, AppCode, PyCharm, CLion
 
 *.iml

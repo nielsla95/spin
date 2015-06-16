@@ -7,21 +7,20 @@
 #include "Controller.h"
 
 Controller::Controller() {
-    ControlData controlData;
-    state = State::MENU;
-    lastState = State::DANS; //Dit doen we om de init aan te roepen bij het opstarten
+    state = State::GAP;
+    lastState = State::MENU; //Dit doen we om de init aan te roepen bij het opstarten
     bool isRunning = true;
 
     SensorData sensorData;
-    Monitor monitor(std::ref(sensorData));
+    //Monitor monitor(std::ref(sensorData));
 
-
+    ControlData controlData;
     BluetoothHandler bluetoothHandler(std::ref(controlData));
 
     ServoDriver servoDriver;
     servoDriver.init();
 
-    ServerHandler server(std::ref(sensorData),std::ref(controlData));
+    //ServerHandler server(std::ref(sensorData));
     WalkCommand walkCommand(&servoDriver);
     PoleCommand poleCommand(&servoDriver);
     GapCommand gapCommand(&servoDriver);
