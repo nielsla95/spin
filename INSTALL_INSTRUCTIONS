@@ -1,4 +1,7 @@
 sudo apt-get install libbluetooth-dev bluez-utils
+sudo apt-get install libboost-all-dev
 
+https://github.com/zaphoyd/websocketpp.git
+// git clone websocketpp, inside is folder 'websocketpp' library
 
-LINUX eerst connecten(pairen met controller)
+add folder 'websocketpp' to /usr/include/
