@@ -19,18 +19,8 @@
 
 // Control table address
 #define P_GOAL_POSITION_L       30
-#define P_GOAL_POSITION_H       31
 #define P_GOAL_SPEED_L          32
-#define P_GOAL_SPEED_H          33
 #define P_PRESENT_POSITION_L    36
-#define P_PRESENT_POSITION_H	37
-#define P_MOVING 		46
-
-#define DEFAULT_BAUDNUM 	1
-#define STEP_THETA		(PI / 50.0f)
-#define CONTROL_PERIOD		1000
-
-#define AMOUNT_SERVOS 		1
 
 void ServoDriver::PrintCommStatus(int CommStatus)
 {
@@ -97,14 +87,13 @@ void ServoDriver::doOne(int num, int GoalPos, int speed){
 
 bool ServoDriver::send(std::vector<int> goalPos) {
 
-    int speed;
+    int speed = 100;
     int speedCorrection;
     std::vector<int> speeds;
     std::vector<int> presentPos;
 
     bool inPosition = false;
     for(int i =1; i <= 18; i++){
-        speed = 200;
         presentPos.push_back(dxl_read_word(i, P_PRESENT_POSITION_L));
         usleep(1000);
         speedCorrection = ((goalPos.at(i-1)-presentPos[i])/1024);
@@ -114,29 +103,36 @@ bool ServoDriver::send(std::vector<int> goalPos) {
         //speeds.push_back(speed*speedCorrection);
         speeds.push_back(speed);
     }
-
+    PrintErrorCode();
     for(int i=1;i<=18; i++){
-        dxl_write_word( i, P_GOAL_SPEED_L, speeds.at(i-1));
+        if(goalPos.at(i-1)==1023) goalPos.at(i-1) = 1022;
+
+        dxl_write_word( i, P_GOAL_SPEED_L,speed);
+        PrintErrorCode();
         usleep(1000);
+
         dxl_write_word( i, P_GOAL_POSITION_L, goalPos.at(i-1));
         usleep(1000);
+        std::cout << "Servo  "<< i << " : " << goalPos.at(i-1) << " - Speed " << speed << " - P_GOAL_SPEED_L " << P_GOAL_SPEED_L << " - P_GOAL_POSITION " <<P_GOAL_POSITION_L << std::endl;
+        PrintErrorCode();
     }
 
     int tmp;
-    int inPos = 0;
+    int inPos = 1;
+    int accuracy = 30;
 
     while(!inPosition){
-
         for(int i =1; i <= 18; i++){
             tmp = dxl_read_word(i, P_PRESENT_POSITION_L);
-            if((tmp >= goalPos.at(i-1) - 100) && (tmp <= goalPos.at(i-1) + 100)){//zet de inpositie boolean op true, wacht tot de servo' s op het eindpunt zijn.
+            usleep(1000);
+            PrintErrorCode();
+            if((tmp >= goalPos.at(i-1) - accuracy) && (tmp <= goalPos.at(i-1) + accuracy)){//zet de inpositie boolean op true, wacht tot de servo' s op het eindpunt zijn.
                 inPos++;
             }
         }
         if(inPos >= 18) inPosition = true;
         else inPos = 1;
     }
-
     return true;
 }
 
@@ -154,8 +150,6 @@ void ServoDriver::init()
     {
         printf("Faild to open dynamixel");
         printf("Press enter to terminate \n");
-        //getchar();
-        //return 0;
     }
     else {
         std::cout<<"Succeed to open dynamixel"<<std::endl;

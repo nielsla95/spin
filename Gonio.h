@@ -15,14 +15,14 @@ public:
     std::vector<float> results;
     Gonio(std::string file) {
 
-        std::string test = "csv/" + file;
+        std::string test = "/home/csv/" + file;
         // read CSV file to float vector
         results = readCSV(test);
         // read float vector covert to double int vector
         std::vector<std::vector<int>> validVars = calcVars();
 
         // RESULTS PRINTED HUR
-        printResults(validVars);
+        //printResults(validVars);
     }
 
     virtual ~Gonio() { }

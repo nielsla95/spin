@@ -11,14 +11,15 @@
 class ServoDriver {
 
 public:
-    std::thread servoThread;
-    ServoDriver(){};
-    virtual ~ServoDriver() { servoThread.join(); }
+    ServoDriver(){
+        init();
+    };
+    virtual ~ServoDriver() {}
 
     void PrintCommStatus(int CommStatus);
     void PrintErrorCode();
     void doOne(int num, int GoalPos, int speed);
-    bool send(std::vector<int> ps);
+    bool send(std::vector<int> goalPos);
     void sendMultiple(std::vector<std::vector<int>> ps);
     void init();
 };

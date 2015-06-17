@@ -21,31 +21,38 @@ std::vector<float> Gonio::readCSV(std::string fileName) {
 
     std::string lineBuffer;
     std::string input;
+    std::vector<float> vars;
 
     // read file
     std::ifstream infile;
     // momenteel bij run config een working directory van deze map ingesteld
-    infile.open(fileName); // todo: bedenken waar en hoe je dit in t project krijgt bij t debuggen
+    try{
+        infile.open(fileName); // todo: bedenken waar en hoe je dit in t project krijgt bij t debuggen
 
-    while (!infile.eof()) // To get you all the lines.
-    {
-        std::getline(infile, lineBuffer); // Saves the line in STRING.
-        input += lineBuffer;
-        input += ",";
-    }
-    infile.close();
-
-    std::vector<float> vars;
-    std::string buffer = "";
-
-    for (int j = 0; j < input.size(); ++j) {
-        if (input[j] == ',' || j == input.size()) {
-            vars.push_back(std::atof(buffer.c_str()));
-            buffer = "";
-        } else {
-            buffer += input[j];
+        while (!infile.eof()) // To get you all the lines.
+        {
+            std::getline(infile, lineBuffer); // Saves the line in STRING.
+            input += lineBuffer;
+            input += ",";
         }
+        infile.close();
+
+
+        std::string buffer = "";
+
+        for (int j = 0; j < input.size(); ++j) {
+            if (input[j] == ',' || j == input.size()) {
+                vars.push_back(std::atof(buffer.c_str()));
+                buffer = "";
+            } else {
+                buffer += input[j];
+            }
+        }
+    }catch(std::exception e)
+    {
+        std::cout << "HUILEN BESTANDJE SHIT WERKT NIET LEUK" << std::endl;
     }
+
     return vars;
 }
 
@@ -108,7 +115,7 @@ std::vector<std::vector<int>> Gonio::calcVars() {
         T2 = 150+(180-(toDegree(acos((((sqrt((sqrt((x2*x2)+(y2*y2))-Lc)*(sqrt((x2*x2)+(y2*y2))-Lc)+(z2*z2)))*(sqrt((sqrt((x2*x2)+(y2*y2))-Lc)*(sqrt((x2*x2)+(y2*y2))-Lc)+(z2*z2))))-(Lt*Lt)-(Lf*Lf))/(-2*Lt*Lf)))));
 
         C3 =150-(toDegree(atan(y3/x3)));
-        y2 =150-(90-((toDegree(atan(((sqrt((x3*x3)+(y3*y3)))-Lc)/-z3)))+(toDegree(acos(((Lt*Lt)-(Lf*Lf)-(sqrt((((sqrt((x3*x3)+(y3*y3)))-(Lc))*((sqrt((x3*x3)+(y3*y3)))-(Lc)))+(z3*z3)))*(sqrt((((sqrt((x3*x3)+(y3*y3)))-(Lc))*((sqrt((x3*x3)+(y3*y3)))-(Lc)))+(z3*z3))))/(-2*(Lf)*(sqrt((((sqrt((x3*x3)+(y3*y3)))-(Lc))*((sqrt((x3*x3)+(y3*y3)))-(Lc)))+(z3*z3)))))))));
+        F3 =150-(90-((toDegree(atan(((sqrt((x3*x3)+(y3*y3)))-Lc)/-z3)))+(toDegree(acos(((Lt*Lt)-(Lf*Lf)-(sqrt((((sqrt((x3*x3)+(y3*y3)))-(Lc))*((sqrt((x3*x3)+(y3*y3)))-(Lc)))+(z3*z3)))*(sqrt((((sqrt((x3*x3)+(y3*y3)))-(Lc))*((sqrt((x3*x3)+(y3*y3)))-(Lc)))+(z3*z3))))/(-2*(Lf)*(sqrt((((sqrt((x3*x3)+(y3*y3)))-(Lc))*((sqrt((x3*x3)+(y3*y3)))-(Lc)))+(z3*z3)))))))));
         T3=150+(180-(toDegree(acos((((sqrt((sqrt((x3*x3)+(y3*y3))-Lc)*(sqrt((x3*x3)+(y3*y3))-Lc)+(z3*z3)))*(sqrt((sqrt((x3*x3)+(y3*y3))-Lc)*(sqrt((x3*x3)+(y3*y3))-Lc)+(z3*z3))))-(Lt*Lt)-(Lf*Lf))/(-2*Lt*Lf)))));
 
         C4=150+(toDegree(atan(y4/x4)));
@@ -143,6 +150,7 @@ std::vector<std::vector<int>> Gonio::calcVars() {
         buffer.push_back(mapToServo(T6));
 
         result.push_back(buffer);
+        buffer.clear();
     }
 
     return result;
