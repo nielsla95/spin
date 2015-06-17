@@ -16,7 +16,6 @@ void WalkCommand::init()
 //                {380,701,956,419,715,1010,502,715,1009,442,310,997,497,311,994,581,310,997}
 //            };
     this->servoDriver->sendMultiple(Gonio("vooruitInit.csv").calcVars());
-
 }
 
 void WalkCommand::run()
