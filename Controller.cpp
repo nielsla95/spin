@@ -5,12 +5,14 @@
 #include <iostream>
 #include <functional>
 #include "Controller.h"
+#include "Gonio.h"
 
 Controller::Controller() {
     ControlData controlData;
     state = State::MENU;
     lastState = State::DANS; //Dit doen we om de init aan te roepen bij het opstarten
     bool isRunning = true;
+    Gonio gon("vooruit.csv");
 
     SensorData sensorData;
     Monitor monitor(std::ref(sensorData));

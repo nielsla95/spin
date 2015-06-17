@@ -18,5 +18,5 @@ LINK_DIRECTORIES(/usr/include/bluetooth)
 set(SOURCE_FILES main.cpp)
 set(dynamixel.h)
 
-add_executable(Spin ${SOURCE_FILES} dxl_hal.c dxl_hal.h dynamixel.c dynamixel.h Models/Servo.h Models/Leg.h Controller.cpp Controller.h ServoDriver.cpp ServoDriver.h Monitor.cpp Monitor.h ServerHandler.cpp ServerHandler.h Models/SensorData.h Commands/ICommand.h Commands/WalkCommand.cpp Commands/WalkCommand.h BluetoothHandler.cpp BluetoothHandler.h Models/ControlData.h AppServer.h)
+add_executable(Spin ${SOURCE_FILES} Gonio.h dxl_hal.c dxl_hal.h dynamixel.c dynamixel.h Models/Servo.h Models/Leg.h Controller.cpp Controller.h ServoDriver.cpp ServoDriver.h Monitor.cpp Monitor.h ServerHandler.cpp ServerHandler.h Models/SensorData.h Commands/ICommand.h Commands/WalkCommand.cpp Commands/WalkCommand.h BluetoothHandler.cpp BluetoothHandler.h Models/ControlData.h AppServer.h Commands/BalloonCommand.cpp Commands/DanceCommand.cpp Commands/GapCommand.cpp Commands/GateCommand.cpp Commands/PoleCommand.cpp Commands/WalkCommand.cpp Gonio.cpp Gonio.h)
 TARGET_LINK_LIBRARIES(Spin bluetooth boost_system)

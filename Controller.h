@@ -30,7 +30,6 @@ private:
 public:
     State state;
     State lastState;
-
     Controller();
     State callCommand(State currentState, State lastState, ICommand *command);
 };
