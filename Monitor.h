@@ -14,8 +14,7 @@ class Monitor {
 public:
     std::thread monitorThread;
     Monitor(SensorData &sensorData){
-        monitorThread = std::thread(&Monitor::listen,this, std::ref(sensorData));
-        sensorData.set("<1,2,3,4,5,6>");
+        //monitorThread = std::thread(&Monitor::listen,this, std::ref(sensorData));
     };
 
     virtual ~Monitor() { monitorThread.join(); }

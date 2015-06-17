@@ -12,13 +12,14 @@
 class Gonio {
 private:
 public:
+    std::vector<float> results;
     Gonio(std::string file) {
 
-        std::string test = "csv/vooruit.csv";
+        std::string test = "csv/" + file;
         // read CSV file to float vector
-        std::vector<float> results = readCSV(test);
+        results = readCSV(test);
         // read float vector covert to double int vector
-        std::vector<std::vector<int>> validVars = calcVars(results);
+        std::vector<std::vector<int>> validVars = calcVars();
 
         // RESULTS PRINTED HUR
         printResults(validVars);
@@ -27,7 +28,7 @@ public:
     virtual ~Gonio() { }
 
     std::vector<float> readCSV(std::string fileName);
-    std::vector<std::vector<int>> calcVars(std::vector<float> input);
+    std::vector<std::vector<int>> calcVars();
 
     float toDegree(float rad);
     int mapToServo(float input);

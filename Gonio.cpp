@@ -54,7 +54,8 @@ float Gonio::toDegree(float rad) {
     return rad*(180/M_PI);
 }
 
-std::vector<std::vector<int>> Gonio::calcVars(std::vector<float> input) {
+std::vector<std::vector<int>> Gonio::calcVars() {
+    std::vector<float> input = results;
     std::vector<std::vector<int>> result;
     std::vector<int> buffer;
 
