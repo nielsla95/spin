@@ -9,13 +9,21 @@
 #include <vector>
 #include <iostream>
 #include "../ServoDriver.h"
-
+#include "../Models/ControlData.h"
+struct Point{
+    int x;
+    int y;
+};
 class ICommand {
 public:
-    ICommand(ServoDriver *servoDriver) : servoDriver(servoDriver) { }
+    std::string currCSV;
+    std::string lastCSV;
 
-    std::vector<std::vector<int>> servoPos;
+    ICommand(ServoDriver *servoDriver) : servoDriver(servoDriver) {}
+    ICommand(ServoDriver *servoDriver, ControlData *controlData) : servoDriver(servoDriver), controlData(controlData) { }
+
     ServoDriver *servoDriver;
+    ControlData *controlData = nullptr;
 
     virtual void init()=0;
 

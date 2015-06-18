@@ -6,10 +6,10 @@
 
 void PoleCommand::init()
 {
-    this->servoDriver->sendMultiple(Gonio("zijwaardsInit.csv").calcVars());
+    this->servoDriver->send(Gonio("paaldansInit.csv").calcVars());
 }
 
 void PoleCommand::run()
 {
-    this->servoDriver->sendMultiple(Gonio("zijwaards.csv").calcVars());
+    this->servoDriver->send(Gonio("paaldans.csv").calcVars());
 };

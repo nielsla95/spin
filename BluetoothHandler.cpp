@@ -34,11 +34,13 @@ void BluetoothHandler::listen(ControlData &controlData)
 
     if( status < 0 ){
         perror("uh oh");
+        usleep(2000000);
         return listen(controlData);
     }else{
         do{
             if( status < 0 ){
                 perror("uh oh");
+                usleep(2000000);
                 return listen(controlData);
             }
             len = read(s, buf, sizeof buf);

@@ -31,7 +31,7 @@ public:
     State state;
     State lastState;
     Controller();
-    State callCommand(State currentState, State lastState, ICommand *command);
+    State callCommand(ICommand *command);
 };
 
 #endif //SPIN_CONTROLLER_H

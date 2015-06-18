@@ -8,6 +8,7 @@
 #include <string>
 #include <sstream>
 #include <vector>
+#include <unistd.h>
 
 /* CSV File format
  * p1    p2    z5    p4    p5    p6
@@ -23,35 +24,41 @@ std::vector<float> Gonio::readCSV(std::string fileName) {
     std::string input;
     std::vector<float> vars;
 
+    // Laat zien welk bestandje hij leest
+    std::cout << "READING: " << fileName << std::endl;
+
     // read file
     std::ifstream infile;
     // momenteel bij run config een working directory van deze map ingesteld
-    try{
-        infile.open(fileName); // todo: bedenken waar en hoe je dit in t project krijgt bij t debuggen
+    infile.open(fileName); // todo: bedenken waar en hoe je dit in t project krijgt bij t debuggen
 
-        while (!infile.eof()) // To get you all the lines.
-        {
-            std::getline(infile, lineBuffer); // Saves the line in STRING.
-            input += lineBuffer;
-            input += ",";
-        }
-        infile.close();
-
-
-        std::string buffer = "";
-
-        for (int j = 0; j < input.size(); ++j) {
-            if (input[j] == ',' || j == input.size()) {
-                vars.push_back(std::atof(buffer.c_str()));
-                buffer = "";
-            } else {
-                buffer += input[j];
-            }
-        }
-    }catch(std::exception e)
+    while (!infile.eof()) // To get you all the lines.
     {
-        std::cout << "HUILEN BESTANDJE SHIT WERKT NIET LEUK" << std::endl;
+        std::getline(infile, lineBuffer); // Saves the line in STRING.
+        input += lineBuffer;
+        input += ",";
     }
+    infile.close();
+
+    std::string buffer = "";
+
+    int inputCounter=0;
+    for (int j = 0; j < input.size(); ++j) {
+        if (input[j] == ',' || j == input.size()) {
+
+            if(buffer.length() > 0)
+            {
+                inputCounter++;
+                std::cout << "testoutput "<< inputCounter << " :" << buffer << std::endl;
+                vars.push_back(std::stof(buffer.c_str()));
+            }
+
+            buffer = "";
+        } else {
+            buffer += input[j];
+        }
+    }
+
 
     return vars;
 }
@@ -157,7 +164,15 @@ std::vector<std::vector<int>> Gonio::calcVars() {
 }
 
 int Gonio::mapToServo(float input) {
-    return floor((3.41*input)+0.5f);
+    int result = floor((3.41*input)+0.5f);
+    if(result>1023 || result < 0)
+    {
+        while(true) {
+            std::cout << "MAPPING HIGHER OR LOWER THAN 1023. Input: " << input << " output: " << result << std::endl;
+            usleep(10000000);
+        }
+    }
+    return result;
 }
 
 

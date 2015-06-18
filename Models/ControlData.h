@@ -55,7 +55,7 @@ public:
             std::stringstream ss(newInput);
             std::string token;
             int argCounter = 1;
-
+            int m;
             while(std::getline(ss, token, ','))
             {
                 switch(argCounter)
@@ -73,7 +73,10 @@ public:
                         speed = atoi(token.c_str());
                         break;
                     case 5:
-                        mode = atoi(token.c_str());
+                        // als settings mode op controller is, zetten we hem hier op mode menu
+                        m = atoi(token.c_str());
+                        if(m==9)m=0;
+                        mode = m;
                         break;
                     case 6:
                         balloon = atoi(token.c_str());
@@ -106,6 +109,21 @@ public:
         }
         return commaCounter == 6;
     }
+
+    bool isEqual (ControlData &c1)
+    {
+        return (x == c1.x &&
+                y == c1.y &&
+                z == c1.z &&
+                mode == c1.mode &&
+                killSwitch == c1.killSwitch &&
+                balloon == c1.balloon );
+    }
+    bool isNotEqual (ControlData &c1)
+    {
+        return !isEqual(c1);
+    }
+
 };
 
 

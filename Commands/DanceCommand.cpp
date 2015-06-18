@@ -7,10 +7,10 @@
 
 void DanceCommand::init()
 {
-    this->servoDriver->sendMultiple(Gonio("dansInit.csv").calcVars());
+    this->servoDriver->send(Gonio("dansInit.csv").calcVars());
 }
 
 void DanceCommand::run()
 {
-    this->servoDriver->sendMultiple(Gonio("dans.csv").calcVars());
+    this->servoDriver->send(Gonio("dans.csv").calcVars());
 };

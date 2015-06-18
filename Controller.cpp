@@ -9,10 +9,11 @@
 
 Controller::Controller() {
     ControlData controlData;
+    ControlData lastControlData;
+    lastControlData = controlData;
     state = State::MENU;
     lastState = State::DANS; //Dit doen we om de init aan te roepen bij het opstarten
     bool isRunning = true;
-    Gonio gon("vooruit.csv");
 
     SensorData sensorData;
     Monitor monitor(std::ref(sensorData));
@@ -31,40 +32,51 @@ Controller::Controller() {
 
     std::cout << "Controller started!" << std::endl;
 
-    int newState;
     while (isRunning) {
+        // CUSTOM CONTROL //
         std::cout << "VOER JE MODER IN: " << std::endl;
+        int newState;
         std::cin >> newState;
         state = (State)newState;
+        // END CUSTOM CONTROL //
+
+        ///////////////////////
+        // BLUETOOTH CONTROL //
+        if((controlData.isNotEqual(lastControlData))){
+            state = (State)controlData.mode;
+            std::cout << " yes controldata is not equal" << std::endl;
+        }
+        // END BLUETOOTH CONTROL//
+        //////////////////////////
         std::cout << "State: " << stateNames[(int) state] << std::endl;
 
         switch (state) {
 	        case State::MENU:
-                this->lastState = callCommand(state, lastState, &walkCommand);
+                this->lastState = callCommand(&walkCommand);
                 break;
             case State::LIMBO:
-                this->lastState = callCommand(state,lastState, &danceCommand);
+                this->lastState = callCommand(&danceCommand);
                 break;
             case State::GRINDBAK:
-                this->lastState = callCommand(state,lastState, &danceCommand);
+                this->lastState = callCommand(&danceCommand);
                 break;
             case State::RACE:
-                this->lastState = callCommand(state,lastState, &danceCommand);
+                this->lastState = callCommand(&danceCommand);
                 break;
             case State::DANS:
-                this->lastState = callCommand(state,lastState, &danceCommand);
+                this->lastState = callCommand(&danceCommand);
                 break;
             case State::GAP: 
-		        this->lastState = callCommand(state, lastState, &gapCommand);
+		        this->lastState = callCommand(&gapCommand);
 		        break;
             case State::PRIK:
-                this->lastState = callCommand(state,lastState, &balloonCommand);
+                this->lastState = callCommand(&balloonCommand);
                 break;
             case State::PAALDANS:
-		        this->lastState = callCommand(state, lastState, &poleCommand);
+		        this->lastState = callCommand(&poleCommand);
 		        break;
             case State::PAREN:
-                this->lastState = callCommand(state,lastState, &danceCommand);
+                this->lastState = callCommand(&danceCommand);
                 break;
 
             default:
@@ -74,15 +86,14 @@ Controller::Controller() {
     }
 }
 
-State Controller::callCommand(State currentState, State lastState, ICommand *command)
+State Controller::callCommand(ICommand *command)
 {
     //Call the init for the current state
-    if(currentState != lastState)
+    if(state != lastState)
     {
         // show new state
         std::cout << "Init - state: " << stateNames[(int) state] << std::endl;
         command->init();
-
     }
     else //The init has been done lets do the run now
     {
@@ -90,5 +101,5 @@ State Controller::callCommand(State currentState, State lastState, ICommand *com
         command->run();
     }
 
-    return currentState;
+    return state;
 }

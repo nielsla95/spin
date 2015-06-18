@@ -7,10 +7,10 @@
 
 void GapCommand::init()
 {
-    this->servoDriver->sendMultiple(Gonio("gapInit.csv").calcVars());
+    this->servoDriver->send(Gonio("gapInit.csv").calcVars());
 }
 
 void GapCommand::run()
 {
-    this->servoDriver->sendMultiple(Gonio("gap.csv").calcVars());
+    this->servoDriver->send(Gonio("gap.csv").calcVars());
 };

@@ -7,10 +7,10 @@
 
 void GateCommand::init()
 {
-        this->servoDriver->sendMultiple(Gonio("gateInit.csv").calcVars());
+        this->servoDriver->send(Gonio("gateInit.csv").calcVars());
 }
 
 void GateCommand::run()
 {
-        this->servoDriver->sendMultiple(Gonio("gate.csv").calcVars());
+        this->servoDriver->send(Gonio("gate.csv").calcVars());
 };
