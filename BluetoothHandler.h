@@ -30,6 +30,8 @@ public:
     virtual ~BluetoothHandler() { bluetoothHandlerThread.join(); }
 
     void listen(ControlData &controlData);
+
+    bool validate(const std::string &rawInput);
 };
 
 

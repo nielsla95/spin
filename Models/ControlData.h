@@ -43,78 +43,12 @@ public:
         balloon = 0;
     }
 
-    void set(const std::string &input)
-    {
-        // if string is validate assign items to member variables
-        if(validate(input))
-        {
-            std::string newInput = input.substr(1, input.length()-1);
-            int endCharIndex = newInput.find('>');
-            newInput = newInput.substr(0, endCharIndex);
-            std::stringstream ss(newInput);
-            std::string token;
-            int argCounter = 1;
-            int m;
-            float ox;
-            while(std::getline(ss, token, ','))
-            {
-                switch(argCounter)
-                {
-                    case 1:
-                        x = atoi(token.c_str());
-                        break;
-                    case 2:
-                        y = atoi(token.c_str());
-                        break;
-                    case 3:
-                        z = atoi(token.c_str());
-                        break;
-                    case 4:
-                        speed = atoi(token.c_str());
-                        break;
-                    case 5:
-                        // als settings mode op controller is, zetten we hem hier op mode menu
-                        m = atoi(token.c_str());
-                        if(m==9)m=0;
-                        mode = m;
-                        break;
-                    case 6:
-                        balloon = atoi(token.c_str());
-                        break;
-                    case 7:
-                        killSwitch = (bool)atoi(token.c_str());
-                        break;
-                    default:
-                        break;
-                }
-                argCounter++;
-            }
-        }
-        else
-            std::cout << "wrong bluetooth data: " << input << std::endl;
-    }
-
-    // validate function
-    bool validate(const std::string &rawInput)
-    {
-        int endCharIndex = rawInput.find('>');
-        std::string input = rawInput.substr(0, endCharIndex+1);
-
-        // check begin and end characters
-        if(input[0] != '<' || input[input.length()-1] !='>') return false;
-
-        int commaCounter=0;
-        for (int i = 1; i < input.length()-1; ++i) {
-            if(input[i]==',') commaCounter++;
-        }
-        return commaCounter == 6;
-    }
-
     bool isEqual (ControlData &c1)
     {
         return (x == c1.x &&
                 y == c1.y &&
                 z == c1.z &&
+                speed == c1.speed &&
                 mode == c1.mode &&
                 killSwitch == c1.killSwitch &&
                 balloon == c1.balloon );
@@ -122,6 +56,31 @@ public:
     bool isNotEqual (ControlData &c1)
     {
         return !isEqual(c1);
+    }
+
+    void set(int x, int y, int z, int speed, int mode, bool killSwitch, int balloon){
+        setJoystick(x,y);
+        std::cout << "set: " << mode << std::endl;
+        setRest(z,speed,mode,killSwitch,balloon);
+    }
+
+    void setJoystick(int _x, int _y)
+    {
+        x=_x;
+        y=_y;
+
+        //std::cout << "X: " << x << " Y: " <<y<<std::endl;
+    }
+
+    void setRest(int _z, int _speed, int _mode, bool _killSwitch, int _balloon)
+    {
+        z=_z;
+        speed = _speed;
+        mode = _mode;
+        // todo: mode kijken
+        killSwitch = _killSwitch;
+        balloon=_balloon;
+        std::cout << "setRest: " << mode << std::endl;
     }
 
 };

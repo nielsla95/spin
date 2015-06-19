@@ -11,7 +11,7 @@
 
 class GrindCommand : public ICommand{
 public:
-    GrindCommand(ServoDriver *servoDriver) : ICommand(servoDriver) { }
+    GrindCommand(ServoDriver *servoDriver, ControlData *controlData) : ICommand(servoDriver,controlData) { }
 
     virtual void init() override;
 

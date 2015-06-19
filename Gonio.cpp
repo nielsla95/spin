@@ -31,7 +31,7 @@ std::vector<float> Gonio::readCSV(std::string fileName) {
         // read file
         std::ifstream infile;
         // momenteel bij run config een working directory van deze map ingesteld
-        infile.open(fileName); // todo: bedenken waar en hoe je dit in t project krijgt bij t debuggen
+        infile.open(fileName);
 
         while (!infile.eof()) // To get you all the lines.
         {
