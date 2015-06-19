@@ -2,77 +2,105 @@
 // Created by eele on 10-6-2015.
 //
 
+#include <unistd.h>
 #include "WalkCommand.h"
 #include "../Gonio.h"
 
 void WalkCommand::init()
 {
-    currCSV = "vooruitlopenpoortjeInit.csv";
-    servoDriver->send(Gonio(currCSV).calcVars());
+    currCSV = "movelInit.csv";
+    //servoDriver->send(Gonio(currCSV).calcVars(),200,100,true); // TODO: weer aanzetten
 }
 
 //Im deeply sorry
 void WalkCommand::run()
 {
+    //servoDriver->send(Gonio("movel.csv").calcVars(),200,100,true);
 
     // choose direction
 
-    // links rechts
-    if(abs(controlData->x) > abs(controlData->y))
+    // knuppels stats
+    // knuppel mid(x,y) = 512,512
+    // knuppel links = 1023
+    // knuppel up = 1023
+    // knuppel rechts = 0
+    // knuppel down = 0
+    //
+
+    int dX = 0;
+    int dY = 0;
+    // kijk verschil x met xmid=512
+    if(controlData->x<=512)
+        dX = 512-controlData->x;
+    else dX = controlData->x - 512;
+
+    if(controlData->y<=512)
+        dY = 512-controlData->y;
+    else
+        dY = controlData->y-512;
+
+    // kijk verschil y met ymid=512
+    if(dX > dY)
     {
-        if(controlData->x > 0){
-            if(lastCSV != "moverInit"){
+        std::cout << "IK BEWEEG X" << std::endl;
+        if(controlData->x < 512){
+            if(lastCSV != "moverInit.csv"){
+                std::cout << "IK BEWEEG X - moverInit" << std::endl;
                 std::vector<std::vector<int>> input = Gonio("moverInit.csv").calcVars();
-                currCSV = "moverInit";
+                currCSV = "moverInit.csv";
             }
             else
             {
+                std::cout << "IK BEWEEG X - mover" << std::endl;
                 std::vector<std::vector<int>> input = Gonio("mover.csv").calcVars();
-                currCSV = "mover";
+                currCSV = "mover.csv";
             }
         }else{
-            if(lastCSV != "movelInit")
+            if(lastCSV != "movelInit.csv")
             {
+                std::cout << "IK BEWEEG X - movelInit" << std::endl;
                 std::vector<std::vector<int>> input = Gonio("movelInit.csv").calcVars();
-                currCSV = "movelInit";
+                currCSV = "movelInit.csv";
             }
             else
             {
+                std::cout << "IK BEWEEG X - movel" << std::endl;
                 std::vector<std::vector<int>> input = Gonio("movel.csv").calcVars();
-                currCSV = "movel";
+                currCSV = "movel.csv";
             }
         }
     }
     else // vooruit achteruit
     {
-        if(controlData->y > 0){
-            if(lastCSV != "movefInit"){
+        if(controlData->y > 512){
+            std::cout << "IK BEWEEG Y" << std::endl;
+            if(lastCSV != "movefInit.csv"){
+                std::cout << "IK BEWEEG Y - movefInit" << std::endl;
                 std::vector<std::vector<int>> input = Gonio("movefInit.csv").calcVars();
-                currCSV = "movefInit";
+                currCSV = "movefInit.csv";
             }
             else
             {
+                std::cout << "IK BEWEEG Y - movef" << std::endl;
                 std::vector<std::vector<int>> input = Gonio("movef.csv").calcVars();
-                currCSV = "movef";
+                currCSV = "movef.csv";
             }
 
         }else{
-            if(lastCSV != "movebInit"){
+            if(lastCSV != "movebInit.csv")
+            {
+                std::cout << "IK BEWEEG Y - movebInit" << std::endl;
                 std::vector<std::vector<int>> input = Gonio("movebInit.csv").calcVars();
-                currCSV = "movebInit";
+                currCSV = "movebInit.csv";
             }
             else
             {
+                std::cout << "IK BEWEEG Y - moveb" << std::endl;
                 std::vector<std::vector<int>> input = Gonio("moveb.csv").calcVars();
-                currCSV = "moveb";
+                currCSV = "moveb.csv";
             }
-
         }
     }
-
-    std::vector<std::vector<int>> input = Gonio("vooruitlopenpoortje.csv").calcVars();
-
-    this->servoDriver->send(input);
 
     lastCSV = currCSV;
 };

@@ -10,7 +10,7 @@
 
 class WalkCommand : public ICommand{
 public:
-    WalkCommand(ServoDriver *servoDriver) : ICommand(servoDriver) { }
+    WalkCommand(ServoDriver *servoDriver, ControlData *controlData) : ICommand(servoDriver,controlData) { }
 
     virtual void init() override;
 

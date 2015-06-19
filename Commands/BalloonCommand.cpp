@@ -7,10 +7,10 @@
 
 void BalloonCommand::init()
 {
-    this->servoDriver->send(Gonio("balloonInit.csv").calcVars());
+    servoDriver->send(Gonio("movesfInit.csv").calcVars(),200,100,true);
 }
 
 void BalloonCommand::run()
 {
-    this->servoDriver->send(Gonio("balloon.csv").calcVars());
+    servoDriver->send(Gonio("movesf.csv").calcVars(),200,100,true);
 };

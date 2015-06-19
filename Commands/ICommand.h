@@ -10,10 +10,7 @@
 #include <iostream>
 #include "../ServoDriver.h"
 #include "../Models/ControlData.h"
-struct Point{
-    int x;
-    int y;
-};
+
 class ICommand {
 public:
     std::string currCSV;

@@ -6,46 +6,54 @@
 #include <functional>
 #include "Controller.h"
 #include "Gonio.h"
+#include "Commands/GrindCommand.h"
 
 Controller::Controller() {
     ControlData controlData;
+    controlData.set("<5,2,3,100,0,0,0>");
+    std::cout <<"CONTROLDATA CONTROLLER -X " << controlData.x << std::endl;
     ControlData lastControlData;
     lastControlData = controlData;
     state = State::MENU;
-    lastState = State::DANS; //Dit doen we om de init aan te roepen bij het opstarten
+    lastState = State::GRINDBAK; //Dit doen we om de init aan te roepen bij het opstarten
     bool isRunning = true;
 
     SensorData sensorData;
     Monitor monitor(std::ref(sensorData));
 
+    int visionX = 0;//				vision
+    int visionY = 0;//				vision
 
-    //BluetoothHandler bluetoothHandler(std::ref(controlData));
+    BluetoothHandler bluetoothHandler(std::ref(controlData));
+    //Vision vis(&visionX,&visionY); //	vision
 
     ServoDriver servoDriver;
 
     //ServerHandler server(std::ref(sensorData),std::ref(controlData));
-    WalkCommand walkCommand(&servoDriver);
+    WalkCommand walkCommand(&servoDriver, &controlData);
     PoleCommand poleCommand(&servoDriver);
     GapCommand gapCommand(&servoDriver);
+    GrindCommand grindCommand(&servoDriver);
     BalloonCommand balloonCommand(&servoDriver);
     DanceCommand danceCommand(&servoDriver);
 
-    std::cout << "Controller started!" << std::endl;
-
     while (isRunning) {
+        usleep(5000000);
+
         // CUSTOM CONTROL //
-        std::cout << "VOER JE MODER IN: " << std::endl;
-        int newState;
-        std::cin >> newState;
-        state = (State)newState;
+//        std::cout << "VOER JE MODER IN: " << std::endl;
+//        int newState;
+//        std::cin >> newState;
+//        state = (State)newState;
         // END CUSTOM CONTROL //
 
         ///////////////////////
         // BLUETOOTH CONTROL //
-        if((controlData.isNotEqual(lastControlData))){
-            state = (State)controlData.mode;
-            std::cout << " yes controldata is not equal" << std::endl;
-        }
+//        std::cout << " Voor mode kijken" << std::endl;
+//        if((controlData.isNotEqual(lastControlData))){
+//            std::cout << " yes controldata is not equal " << controlData.mode << std::endl;
+//            state = (State)controlData.mode;
+//        }
         // END BLUETOOTH CONTROL//
         //////////////////////////
         std::cout << "State: " << stateNames[(int) state] << std::endl;
@@ -58,7 +66,7 @@ Controller::Controller() {
                 this->lastState = callCommand(&danceCommand);
                 break;
             case State::GRINDBAK:
-                this->lastState = callCommand(&danceCommand);
+                this->lastState = callCommand(&grindCommand);
                 break;
             case State::RACE:
                 this->lastState = callCommand(&danceCommand);

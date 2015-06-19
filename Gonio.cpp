@@ -27,37 +27,44 @@ std::vector<float> Gonio::readCSV(std::string fileName) {
     // Laat zien welk bestandje hij leest
     std::cout << "READING: " << fileName << std::endl;
 
-    // read file
-    std::ifstream infile;
-    // momenteel bij run config een working directory van deze map ingesteld
-    infile.open(fileName); // todo: bedenken waar en hoe je dit in t project krijgt bij t debuggen
+    try{
+        // read file
+        std::ifstream infile;
+        // momenteel bij run config een working directory van deze map ingesteld
+        infile.open(fileName); // todo: bedenken waar en hoe je dit in t project krijgt bij t debuggen
 
-    while (!infile.eof()) // To get you all the lines.
-    {
-        std::getline(infile, lineBuffer); // Saves the line in STRING.
-        input += lineBuffer;
-        input += ",";
-    }
-    infile.close();
-
-    std::string buffer = "";
-
-    int inputCounter=0;
-    for (int j = 0; j < input.size(); ++j) {
-        if (input[j] == ',' || j == input.size()) {
-
-            if(buffer.length() > 0)
-            {
-                inputCounter++;
-                std::cout << "testoutput "<< inputCounter << " :" << buffer << std::endl;
-                vars.push_back(std::stof(buffer.c_str()));
-            }
-
-            buffer = "";
-        } else {
-            buffer += input[j];
+        while (!infile.eof()) // To get you all the lines.
+        {
+            std::getline(infile, lineBuffer); // Saves the line in STRING.
+            input += lineBuffer;
+            input += ",";
         }
+        infile.close();
+
+        std::string buffer = "";
+
+        int inputCounter=0;
+        for (int j = 0; j < input.size(); ++j) {
+            if (input[j] == ',' || j == input.size()) {
+
+                if(buffer.length() > 0)
+                {
+                    inputCounter++;
+                    //std::cout << "testoutput "<< inputCounter << " :" << buffer << std::endl;
+                    vars.push_back(std::stof(buffer.c_str()));
+                }
+
+                buffer = "";
+            } else {
+                buffer += input[j];
+            }
+        }
+    }catch(std::exception e)
+    {
+        std::cout << "MWEHHWEHWE KAN GEEN BESTAND VINDEN " << fileName << std::endl;
     }
+
+
 
 
     return vars;

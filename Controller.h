@@ -12,13 +12,13 @@
 #include "Commands/ICommand.h"
 #include "Commands/WalkCommand.h"
 #include "Commands/PoleCommand.h"
-#include "Commands/GateCommand.h"
 #include "Commands/BalloonCommand.h"
 #include "Commands/DanceCommand.h"
 #include "Commands/GapCommand.h"
 #include "Models/Leg.h"
 #include "ServoDriver.h"
 #include "BluetoothHandler.h"
+#include "Vision.h"
 
 enum class State { MENU, LIMBO, GRINDBAK, RACE, DANS, GAP, PRIK, PAALDANS, PAREN};
 

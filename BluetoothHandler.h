@@ -15,7 +15,6 @@
 #include <bluetooth/hci_lib.h>
 #include <bluetooth/rfcomm.h>
 #include <thread>
-#include "BluetoothHandler.h"
 #include "Models/ControlData.h"
 
 class BluetoothHandler {

@@ -48,14 +48,14 @@ public:
         // if string is validate assign items to member variables
         if(validate(input))
         {
-            std::string newInput = input.substr(1, input.length() - 1); // todo: crap
+            std::string newInput = input.substr(1, input.length()-1);
             int endCharIndex = newInput.find('>');
             newInput = newInput.substr(0, endCharIndex);
-
             std::stringstream ss(newInput);
             std::string token;
             int argCounter = 1;
             int m;
+            float ox;
             while(std::getline(ss, token, ','))
             {
                 switch(argCounter)

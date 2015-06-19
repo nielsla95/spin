@@ -14,7 +14,7 @@ void BluetoothHandler::listen(ControlData &controlData)
     struct sockaddr_rc addr = { 0 };
     int s, status, len;
     char dest[18] = "00:0B:53:13:15:3C";
-    char buf[2048];
+    char buf[1024];
     std::string output;
 
     // allocate a socket
@@ -38,17 +38,34 @@ void BluetoothHandler::listen(ControlData &controlData)
         return listen(controlData);
     }else{
         do{
+            // KIJK WANNEER IK KAN VERBINDEN
             if( status < 0 ){
                 perror("uh oh");
                 usleep(2000000);
+                // ZO NIET DAN VERBINDING IK OPNIEUW
                 return listen(controlData);
             }
-            len = read(s, buf, sizeof buf);
+            // len = lengte van s en schrijft naar buf
+            len = read(s, buf, 200);
             if( len>0 ) {
                 buf[len]=0;
                 output += buf;
-                std::cout << output << std::endl;
-                controlData.set(output);
+
+                int startIndex = -1;
+                int endIndex = -1;
+
+                for(int i = 0; i < output.length(); i++)
+                {
+                    if(startIndex == -1 && output[i] == '<') startIndex = i;
+                    if(endIndex == -1 && startIndex <  i && output[i] == '>') endIndex = i;
+                }
+
+                if(startIndex != -1 && endIndex != -1){
+                    std::string fixedOutput = output.substr(startIndex, endIndex);
+                    controlData.set(output);
+                    std::cout << "OUTPUT BLUETOOTH: " << output << std::endl;
+                    output = "";
+                }
             }
         }while(len>0);
 

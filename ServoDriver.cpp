@@ -92,79 +92,83 @@ bool ServoDriver::send(std::vector<std::vector<int>> goalPos) {
 }
 
 bool ServoDriver::send(std::vector<std::vector<int>> goalPos, int _speed, int _speed_min, bool useCheck) {
-    for (int k = 0; k < goalPos.size(); ++k)
-    {
-        int speed;
-        float dDistance;
-        std::vector<int> speeds;
-        std::vector<int> presentPos;
+        for (int k = 0; k < goalPos.size(); ++k)
+        {
+            int speed;
+            float dDistance;
+            std::vector<int> speeds;
+            std::vector<int> presentPos;
 
-        bool inPosition = false;
-        for (int i = 1; i <= 18; i++) {
-            presentPos.push_back(dxl_read_word(i, P_PRESENT_POSITION_L));
-            // deltaDistance
-            if (goalPos.at(k).at(i - 1) > presentPos.at(i - 1)) {
-                dDistance = goalPos.at(k).at(i - 1) - presentPos.at(i - 1);
-            } else {
-                dDistance = presentPos.at(i - 1) - goalPos.at(k).at(i - 1);
-            }
-
-            speed = _speed * (dDistance / 1024);
-            if (speed < _speed_min)speed = _speed_min;
-
-            std::cout << "CurrentPOs: " << presentPos.at(i - 1) << " GoalPos: " << goalPos.at(k).at(i - 1) << " dDistance: " <<
-                         dDistance << " speed = " << speed << std::endl;
-            speeds.push_back(speed);
-        }
-        PrintErrorCode();
-        for (int i = 1; i <= 18; i++) {
-            if (goalPos.at(k).at(i - 1) == 1023) goalPos.at(k).at(i - 1) = 1022;
-            // todo: sleeps weghalen en testen
-            dxl_write_word(i, P_GOAL_SPEED_L, speeds.at(i - 1));
-            PrintErrorCode();
-
-            dxl_write_word(i, P_GOAL_POSITION_L, goalPos.at(k).at(i - 1));
-            PrintErrorCode();
-        }
-
-        if (!useCheck) {
-            // CHECK MOVING 1
-            char moving = 1;
-            int inPos;
-            while (inPos != 18) {
-                inPos = 0;
-                for (int i = 1; i <= 18; ++i) {
-                    moving = dxl_read_byte(i, P_MOVING);
-                    if (moving == 0) inPos++;
+            bool inPosition = false;
+            for (int i = 1; i <= 18; i++) {
+                presentPos.push_back(dxl_read_word(i, P_PRESENT_POSITION_L));
+                usleep(1000);
+                // deltaDistance
+                if (goalPos.at(k).at(i - 1) > presentPos.at(i - 1)) {
+                    dDistance = goalPos.at(k).at(i - 1) - presentPos.at(i - 1);
+                } else {
+                    dDistance = presentPos.at(i - 1) - goalPos.at(k).at(i - 1);
                 }
-                std::cout << "Moving servo's" << std::endl;
+
+                speed = _speed * (dDistance / 1024);
+                if (speed < _speed_min || speed > 1023)speed = _speed_min;
+
+                //std::cout << "CurrentPOs: " << presentPos.at(i - 1) << " GoalPos: " << goalPos.at(k).at(i - 1) << " dDistance: " << dDistance << " speed = " << speed << std::endl;
+                speeds.push_back(speed);
+            }
+            PrintErrorCode();
+            for (int i = 1; i <= 18; i++) {
+                if (goalPos.at(k).at(i - 1) == 1023) goalPos.at(k).at(i - 1) = 1022;
+                // todo: sleeps weghalen en testen
+                dxl_write_word(i, P_GOAL_SPEED_L, speeds.at(i - 1));
+                usleep(1000);
+                PrintErrorCode();
+
+                dxl_write_word(i, P_GOAL_POSITION_L, goalPos.at(k).at(i - 1));
+                usleep(1000);
+                PrintErrorCode();
             }
 
-            // EINDE CHECK MOVING 1;
+            std::cout << "Usecheck : " << useCheck << std::endl;
+            if (useCheck) {
+                // CHECK MOVING 1
+//            char moving = 1;
+//            int inPos;
+//            while (inPos != 18) {
+//                inPos = 0;
+//                for (int i = 1; i <= 18; ++i) {
+//                    moving = dxl_read_byte(i, P_MOVING);
+//                    if (moving == 0) inPos++;
+//                }
+//                std::cout << "Moving servo's" << std::endl;
+//            }
 
-        //    // CHECK MOVING 2
-        //    int tmp;
-        //    int inPos = 1;
-        //    int accuracy = 5;
-        //
-        //    while(!inPosition){
-        //        for(int i =1; i <= 18; i++){
-        //            tmp = dxl_read_word(i, P_PRESENT_POSITION_L);
-        //            PrintErrorCode();
-        //            if((tmp >= goalPos.at(i-1) - accuracy) && (tmp <= goalPos.at(i-1) + accuracy)){//zet de inpositie boolean op true, wacht tot de servo' s op het eindpunt zijn.
-        //                inPos++;
-        //            }
-        //        }
-        //        if(inPos >= 18) inPosition = true;
-        //        else inPos = 1;
-        //    }
-            //  EINDE CHECK MOVING 2
+                // EINDE CHECK MOVING 1;
+
+                // CHECK MOVING 2
+                int tmp;
+                int inPos = 1;
+                int accuracy = 25;
+
+                while(!inPosition){
+                    for(int i =1; i <= 18; i++){
+                        tmp = dxl_read_word(i, P_PRESENT_POSITION_L);
+                        usleep(1000);
+                        PrintErrorCode();
+                        if((tmp >= goalPos.at(k).at(i-1) - accuracy) && (tmp <= goalPos.at(k).at(i-1) + accuracy)){//zet de inpositie boolean op true, wacht tot de servo' s op het eindpunt zijn.
+                            inPos++;
+                        }
+                    }
+                    if(inPos >= 18) inPosition = true;
+                    else inPos = 1;
+                }
+                //  EINDE CHECK MOVING 2
+            }
+
+            speeds.clear();
+            presentPos.clear();
         }
-
-        speeds.clear();
-        presentPos.clear();
-    }
-    return true;
+        return true;
 }
 
 
