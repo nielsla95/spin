@@ -24,14 +24,13 @@ std::vector<float> Gonio::readCSV(std::string fileName) {
     std::string input;
     std::vector<float> vars;
 
-    // Laat zien welk bestandje hij leest
-    std::cout << "READING: " << fileName << std::endl;
+    // read file
+    std::ifstream infile(fileName);
+    // momenteel bij run config een working directory van deze map ingesteld
+    if(infile){
+        // Laat zien welk bestandje hij leest
+        std::cout << "Reading: " << fileName << std::endl;
 
-    try{
-        // read file
-        std::ifstream infile;
-        // momenteel bij run config een working directory van deze map ingesteld
-        infile.open(fileName);
 
         while (!infile.eof()) // To get you all the lines.
         {
@@ -59,14 +58,9 @@ std::vector<float> Gonio::readCSV(std::string fileName) {
                 buffer += input[j];
             }
         }
-    }catch(std::exception e)
-    {
-        std::cout << "MWEHHWEHWE KAN GEEN BESTAND VINDEN " << fileName << std::endl;
+    }else{
+        std::cout << "Can't find file: " << fileName << std::endl;
     }
-
-
-
-
     return vars;
 }
 

@@ -64,15 +64,8 @@ void BluetoothHandler::listen(ControlData &controlData)
                 if(startIndex != -1 && endIndex != -1){
                     std::string fixedInput = input.substr(startIndex, endIndex+1);
 
-                    // string ontleden
-                    //std::cout << "FIXED input BLUETOOTH: " << fixedInput << std::endl;
-                    // todo: Laat alle nieuwe waardes even zien met een input
-                    //if(validate(fixedInput))
-                    //{
                         std::string zonderhaakjes = fixedInput.substr(1, fixedInput.length()-2);
-                        //int endCharIndex = zonderhaakjes.find('>');
-                        //zonderhaakjes = zonderhaakjes.substr(0, endCharIndex);
-                        //std::cout << "FIXED new input BLUETOOTH: " << zonderhaakjes << std::endl;
+
                         std::stringstream ss(zonderhaakjes);
                         std::string token;
                         int argCounter = 1;
@@ -98,9 +91,7 @@ void BluetoothHandler::listen(ControlData &controlData)
 
                                     // als settings mode op controller is, zetten we hem hier op mode menu
                                     mode = atoi(token.c_str());
-                                    std::cout << "BLUETOOTH MODE >> " << mode << std::endl;
                                     if(mode==9)mode=0;
-                                    std::cout << "BLUETOOTH2 MODE >> " << mode << std::endl;
                                     break;
                                 case 6:
                                     balloon = atoi(token.c_str());
@@ -113,50 +104,14 @@ void BluetoothHandler::listen(ControlData &controlData)
                             }
                             argCounter++;
                         }
-                    std::cout << "input: ";
-                    for (int i = 0; i < input.length(); ++i) {
-                        std::cout<< input[i];
-                    }
-                    std::cout << std::endl;
-
-                    std::cout << "fixedInput: ";
-                    for (int i = 0; i < fixedInput.length(); ++i) {
-                        std::cout<< fixedInput[i];
-                    }
-                    std::cout << std::endl;
-
-                    std::cout << "zonderhaakjes: ";
-                    for (int i = 0; i < zonderhaakjes.length(); ++i) {
-                        std::cout<< zonderhaakjes[i];
-                    }
-                    std::cout << std::endl;
-
-                    std::cout << "Bluetoothset: " << mode << std::endl;
                         controlData.set(x,y,z,speed,mode,killSwitch,balloon);
                     input = "";
                     zonderhaakjes = "";
                     fixedInput = "";
-                    //memset(buf, 0, sizeof buf);
                 }
             }
         }while(len>0);
 
         close(s);
     }
-}
-
-// validate function
-bool BluetoothHandler::validate(const std::string &rawInput)
-{
-    int endCharIndex = rawInput.find('>');
-    std::string input = rawInput.substr(0, endCharIndex+1);
-
-    // check begin and end characters
-    if(input[0] != '<' || input[input.length()-1] !='>') return false;
-
-    int commaCounter=0;
-    for (int i = 1; i < input.length()-1; ++i) {
-        if(input[i]==',') commaCounter++;
-    }
-    return commaCounter == 6;
 }

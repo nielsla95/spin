@@ -7,10 +7,10 @@
 
 void DanceCommand::init()
 {
-    this->servoDriver->send(Gonio("turnlInit.csv").calcVars(),1023,500,true);
+    this->servoDriver->send(Gonio("turnlInit.csv").calcVars(),200,100,true);
 }
 
 void DanceCommand::run()
 {
-    this->servoDriver->send(Gonio("turnl.csv").calcVars(),1023,500,true);
+    this->servoDriver->send(Gonio("turnl.csv").calcVars(),200,100,true);
 };

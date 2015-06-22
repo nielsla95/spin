@@ -168,6 +168,7 @@ bool ServoDriver::send(std::vector<std::vector<int>> goalPos, int _speed, int _s
             speeds.clear();
             presentPos.clear();
         }
+    std::cout << "Done sending" << std::endl;
         return true;
 }
 

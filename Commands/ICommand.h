@@ -15,12 +15,13 @@ class ICommand {
 public:
     std::string currCSV;
     std::string lastCSV;
-
-    ICommand(ServoDriver *servoDriver) : servoDriver(servoDriver) {}
-    ICommand(ServoDriver *servoDriver, ControlData *controlData) : servoDriver(servoDriver), controlData(controlData) { }
+    std::vector<std::vector<int>> input;
 
     ServoDriver *servoDriver;
     ControlData *controlData = nullptr;
+
+    ICommand(ServoDriver *servoDriver) : servoDriver(servoDriver) {}
+    ICommand(ServoDriver *servoDriver, ControlData *controlData) : servoDriver(servoDriver), controlData(controlData) { }
 
     virtual void init()=0;
 

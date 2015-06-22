@@ -10,8 +10,7 @@
 
 Controller::Controller() {
     ControlData controlData;
-    controlData.setJoystick(512,512);
-    controlData.setRest(512,100,0,false,0);
+    controlData.set(512,512,512,100,1,false,0);
     ControlData lastControlData;
     lastControlData.set(512,512,512,100,1,false,0);
     state = State::MENU;
@@ -41,23 +40,24 @@ Controller::Controller() {
         // todo: wegcommenten
 
         // CUSTOM CONTROL //
+
 //        std::cout << "VOER JE MODER IN: " << std::endl;
 //        int newState;
 //        std::cin >> newState;
 //        state = (State)newState;
+
         // END CUSTOM CONTROL //
 
         ///////////////////////
         // BLUETOOTH CONTROL //
-        //std::cout << " Voor mode kijken" << std::endl;
+
         if((controlData.isNotEqual(lastControlData))){
-            //std::cout << " VORIGE MODE: " << lastControlData.mode << " NIEUWE MODE: "<< controlData.mode << std::endl;
             state = (State)controlData.mode;
             lastControlData = controlData;
         }
+
         // END BLUETOOTH CONTROL//
         //////////////////////////
-        //std::cout << "State: " << stateNames[(int) state] << std::endl;
 
         switch (state) {
 	        case State::MENU:
@@ -100,16 +100,15 @@ State Controller::callCommand(ICommand *command)
     //Call the init for the current state
     if(state != lastState)
     {
-        // show new state
         //std::cout << "Init - state: " << stateNames[(int) state] << std::endl;
         command->init();
-
     }
     else //The init has been done lets do the run now
     {
 	    //std::cout << "Running - state: " << stateNames[(int) state] << std::endl;
         command->run();
     }
-
+    // todo: sleep weghalen
+    //usleep(2000000);
     return state;
 }

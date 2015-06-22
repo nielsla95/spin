@@ -60,7 +60,6 @@ public:
 
     void set(int x, int y, int z, int speed, int mode, bool killSwitch, int balloon){
         setJoystick(x,y);
-        std::cout << "set: " << mode << std::endl;
         setRest(z,speed,mode,killSwitch,balloon);
     }
 
@@ -68,8 +67,6 @@ public:
     {
         x=_x;
         y=_y;
-
-        //std::cout << "X: " << x << " Y: " <<y<<std::endl;
     }
 
     void setRest(int _z, int _speed, int _mode, bool _killSwitch, int _balloon)
@@ -77,10 +74,8 @@ public:
         z=_z;
         speed = _speed;
         mode = _mode;
-        // todo: mode kijken
         killSwitch = _killSwitch;
         balloon=_balloon;
-        std::cout << "setRest: " << mode << std::endl;
     }
 
 };

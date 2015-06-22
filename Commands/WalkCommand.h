@@ -15,6 +15,8 @@ public:
     virtual void init() override;
 
     virtual void run() override;
+
+    std::vector<std::vector<int>> callCSV(std::string initCSV, std::string normalCSV);
 };
 
 
