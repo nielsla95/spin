@@ -14,7 +14,7 @@ void WalkCommand::init()
     this->currCSV = "movefInit.csv";
     this->input = Gonio(currCSV).calcVars();
     //usleep(2000000);
-    servoDriver->send(input,200,100,true);
+    servoDriver->sendSyncWrite(this->input,200);
     this->lastCSV = currCSV;
     std::cout << "wc org init 1 : " << currCSV << std::endl;
 }
@@ -59,7 +59,7 @@ void WalkCommand::run()
             }
         }
         //usleep(2000000);
-        servoDriver->send(this->input,200,100,true);
+        servoDriver->sendSyncWrite(this->input,200);
         this->lastCSV = this->currCSV;
     }
 };

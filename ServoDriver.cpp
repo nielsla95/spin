@@ -13,7 +13,6 @@
 #include <thread>
 #include <utime.h>
 #include "dynamixel.h"
-//#include <dxl_hal.h>
 
 #define PI	3.141529f
 
@@ -22,6 +21,8 @@
 #define P_GOAL_SPEED_L          32
 #define P_PRESENT_POSITION_L    36
 #define P_MOVING 		        46
+#define NUM_ACTUATOR		    18
+#define DELAY           		(1000) // usec (Large value is more slow)
 
 void ServoDriver::PrintCommStatus(int CommStatus)
 {
@@ -86,6 +87,57 @@ void ServoDriver::doOne(int num, int GoalPos, int speed){
     dxl_write_word( num, P_GOAL_POSITION_L, GoalPos );
 }
 
+void ServoDriver::sendSyncWrite(std::vector < std::vector < int >> goalPos, int speed) {
+
+    if(speed < 0 || speed > 300) speed = 300;
+
+    int CommStatus;
+    for (int j = 0; j < goalPos.size(); ++j) {
+        // Make syncwrite packet
+        dxl_write_word( BROADCAST_ID, P_GOAL_SPEED_L, speed );
+        dxl_set_txpacket_id(BROADCAST_ID);
+        dxl_set_txpacket_instruction(INST_SYNC_WRITE);
+        dxl_set_txpacket_parameter(0, P_GOAL_POSITION_L);
+        dxl_set_txpacket_parameter(1, 2);
+
+        for(int i=0; i<NUM_ACTUATOR; i++ )
+        {
+            dxl_set_txpacket_parameter(2+3*i,i+1);
+            dxl_set_txpacket_parameter(2+3*i+1, dxl_get_lowbyte(goalPos.at(j).at(i)));
+            dxl_set_txpacket_parameter(2+3*i+2, dxl_get_highbyte(goalPos.at(j).at(i)));
+        }
+        dxl_set_txpacket_length((2+1)*NUM_ACTUATOR+4);
+        dxl_txrx_packet();
+        usleep(1000);
+        PrintErrorCode();
+        CommStatus = dxl_get_result();
+        if( CommStatus == COMM_RXSUCCESS )
+        {
+            std::cout << "SUCCES COMMSTATUS" << std::endl;
+            PrintErrorCode();
+        }
+        else
+        {
+            std::cout << "FAIL COMMSTATUS" << std::endl;
+            PrintCommStatus(CommStatus);
+        }
+
+        // Tijd om beweging af te maken
+        float timeOut = 1;
+
+        std::vector<int> presentPos;
+        int maxDeltaPos=0;
+        int dPos = 0;
+        for (int k = 1; k <=18; ++k) {
+            dPos = abs(dxl_read_word(k, P_PRESENT_POSITION_L));
+            if( dPos>maxDeltaPos) maxDeltaPos = dPos;
+        }
+        std::cout << "maxDeltaPos: " << maxDeltaPos << std::endl;
+        timeOut = maxDeltaPos/((speed*1228)/1023);
+        std::cout << "TImeout : "<<timeOut << std::endl;
+        usleep(timeOut*1000000);
+    }
+}
 
 bool ServoDriver::send(std::vector<std::vector<int>> goalPos) {
     return send(goalPos,200,100,true);
@@ -167,6 +219,7 @@ bool ServoDriver::send(std::vector<std::vector<int>> goalPos, int _speed, int _s
 
             speeds.clear();
             presentPos.clear();
+            usleep(DELAY);
         }
     std::cout << "Done sending" << std::endl;
         return true;

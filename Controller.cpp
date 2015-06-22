@@ -49,7 +49,7 @@ Controller::Controller() {
 
         ///////////////////////
         // BLUETOOTH CONTROL //
-
+//
 //        if((controlData.isNotEqual(lastControlData))){
 //            state = (State)controlData.mode;
 //            lastControlData = controlData;
