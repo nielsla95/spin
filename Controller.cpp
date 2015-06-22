@@ -37,24 +37,23 @@ Controller::Controller() {
     DanceCommand danceCommand(&servoDriver);
 
     while (isRunning) {
-        // todo: wegcommenten
-
+        isRunning = !controlData.killSwitch;
         // CUSTOM CONTROL //
 
-//        std::cout << "VOER JE MODER IN: " << std::endl;
-//        int newState;
-//        std::cin >> newState;
-//        state = (State)newState;
+        std::cout << "VOER JE MODER IN: " << std::endl;
+        int newState;
+        std::cin >> newState;
+        state = (State)newState;
 
         // END CUSTOM CONTROL //
 
         ///////////////////////
         // BLUETOOTH CONTROL //
 
-        if((controlData.isNotEqual(lastControlData))){
-            state = (State)controlData.mode;
-            lastControlData = controlData;
-        }
+//        if((controlData.isNotEqual(lastControlData))){
+//            state = (State)controlData.mode;
+//            lastControlData = controlData;
+//        }
 
         // END BLUETOOTH CONTROL//
         //////////////////////////
