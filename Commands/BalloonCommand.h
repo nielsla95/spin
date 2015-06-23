@@ -9,11 +9,16 @@
 
 class BalloonCommand : public ICommand{
 public:
-    BalloonCommand(ServoDriver *servoDriver) : ICommand(servoDriver) { }
+
+
+    BalloonCommand(ServoDriver *servoDriver, SensorData *sensorData, int *x, int *y) : ICommand(servoDriver, sensorData,
+                                                                                                x, y) { }
 
     virtual void init() override;
 
     virtual void run() override;
+
+    void prik();
 };
 
 

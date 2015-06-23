@@ -31,7 +31,8 @@ public:
     int speed;
     int mode;
     bool killSwitch;
-    int balloon; // 0 = niks, 1 = blue
+    int balloon; // 0 = niks, 1 = blue, 2 = rood
+    bool interrupted;
 
     ControlData() {
         x = 0;
@@ -41,6 +42,7 @@ public:
         mode = 0;
         killSwitch = false;
         balloon = 0;
+        interrupted = false;
     }
 
     bool isEqual (ControlData &c1)

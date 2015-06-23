@@ -6,10 +6,29 @@
 
 void PoleCommand::init()
 {
-    this->servoDriver->send(Gonio("paaldansInit.csv").calcVars());
+    std::cout << "INIT PAAL" << std::endl;
 }
 
 void PoleCommand::run()
 {
-    this->servoDriver->send(Gonio("paaldans.csv").calcVars());
+    // todo: PERFECT RONDJE tetsen
+    for (int i = 0; i < 29; ++i) {
+        //std::cout << "Afstand paal: " << sensorData->dist << std::endl;
+
+        this->servoDriver->sendSyncWrite(Gonio("moverGInit.csv").calcVars(),100000,200);
+        this->servoDriver->sendSyncWrite(Gonio("moverG.csv").calcVars(),100000,200);
+        this->servoDriver->sendSyncWrite(Gonio("moverG.csv").calcVars(),100000,200);
+        this->servoDriver->sendSyncWrite(Gonio("turnlInit.csv").calcVars(),150000,200);
+        this->servoDriver->sendSyncWrite(Gonio("turnl.csv").calcVars(),150000,200);
+        if(this->sensorData->dist < (25 - 10))//NOG TE DOOEEEEN
+        {
+
+        }
+        else if(this->sensorData->dist > (25 + 10))
+        {
+
+        }
+        std::cout << "Rondje counter: " << i << std::endl;
+    }
+
 };

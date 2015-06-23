@@ -14,7 +14,7 @@ void WalkCommand::init()
     this->currCSV = "movefInit.csv";
     this->input = Gonio(currCSV).calcVars();
     //usleep(2000000);
-    servoDriver->sendSyncWrite(this->input,200);
+    servoDriver->sendSyncWrite(this->input,200000,300);
     this->lastCSV = currCSV;
     std::cout << "wc org init 1 : " << currCSV << std::endl;
 }
@@ -53,13 +53,13 @@ void WalkCommand::run()
         else // Anders verticaal bewegen
         {
             if (controlData->y > center) {
-                this->input = callCSV("movefInit.csv","movef.csv");
+                this->input = callCSV("movesfInit.csv","movesf.csv");
             } else {
-                this->input = callCSV("movebInit.csv","moveb.csv");
+                this->input = callCSV("movesbInit.csv","movesb.csv");
             }
         }
-        //usleep(2000000);
-        servoDriver->sendSyncWrite(this->input,200);
+
+        servoDriver->sendSyncWrite(this->input,200000,300);
         this->lastCSV = this->currCSV;
     }
 };
@@ -77,4 +77,6 @@ std::vector<std::vector<int>> WalkCommand::callCSV(std::string initCSV, std::str
         result = Gonio(normalCSV).calcVars();
         currCSV = normalCSV;
     }
+
+    return result;
 }

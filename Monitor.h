@@ -14,6 +14,7 @@ class Monitor {
 public:
     std::thread monitorThread;
     Monitor(SensorData &sensorData){
+        // todo: wegcommenten
         //monitorThread = std::thread(&Monitor::listen,this, std::ref(sensorData));
     };
 

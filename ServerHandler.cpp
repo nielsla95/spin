@@ -8,7 +8,7 @@ void ServerHandler::start() {
     server.run(9002);
 }
 
-void ServerHandler::dataToJSON(SensorData &sensorData, ControlData &controlData){
+void ServerHandler::dataToJSON(SensorData &sensorData, ControlData &controlData, std::vector<int> *servoData){
     std::string result;
     // convert to json string
 

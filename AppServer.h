@@ -21,6 +21,7 @@ class AppServer {
 
 public:
     std::string jsonObject;
+    std::string lastJsonObject;
     AppServer(){
         m_server.init_asio();
 
@@ -29,7 +30,14 @@ public:
         m_server.set_message_handler(bind(&AppServer::on_message,this,::_1,::_2));
     }
     void on_open(connection_hdl hdl) {
-        this->m_server.send(hdl, jsonObject, websocketpp::frame::opcode::TEXT);
+        while(true){
+            if(jsonObject != lastJsonObject)
+            {
+                this->m_server.send(hdl, jsonObject, websocketpp::frame::opcode::TEXT);
+                lastJsonObject = jsonObject;
+            }
+            usleep(2000000);
+        }
     }
 
     void on_close(connection_hdl hdl) {

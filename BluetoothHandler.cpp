@@ -88,10 +88,7 @@ void BluetoothHandler::listen(ControlData &controlData)
                                     speed = atoi(token.c_str());
                                     break;
                                 case 5:
-
-                                    // als settings mode op controller is, zetten we hem hier op mode menu
                                     mode = atoi(token.c_str());
-                                    if(mode==9)mode=0;
                                     break;
                                 case 6:
                                     balloon = atoi(token.c_str());
@@ -104,7 +101,9 @@ void BluetoothHandler::listen(ControlData &controlData)
                             }
                             argCounter++;
                         }
-                        controlData.set(x,y,z,speed,mode,killSwitch,balloon);
+
+                    controlData.set(x,y,z,speed,mode,killSwitch,balloon);
+
                     input = "";
                     zonderhaakjes = "";
                     fixedInput = "";

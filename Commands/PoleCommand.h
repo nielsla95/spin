@@ -9,7 +9,8 @@
 
 class PoleCommand : public ICommand{
 public:
-    PoleCommand(ServoDriver *servoDriver) : ICommand(servoDriver) { }
+
+    PoleCommand(ServoDriver *servoDriver, SensorData *sensorData) : ICommand(servoDriver, sensorData) { }
 
     virtual void init() override;
 

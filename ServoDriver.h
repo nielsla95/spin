@@ -11,15 +11,16 @@
 class ServoDriver {
 
 public:
-    ServoDriver(){
+    ServoDriver(std::vector<int> *servoData):servoData(servoData){
         init();
     };
+    std::vector<int> *servoData;
     virtual ~ServoDriver() {}
-
     void PrintCommStatus(int CommStatus);
     void PrintErrorCode();
     void doOne(int num, int GoalPos, int speed);
-    void sendSyncWrite(std::vector<std::vector<int>> goalPos, int speed);
+    std::vector<int> * getData();
+    void sendSyncWrite(std::vector<std::vector<int>> goalPos,int sleepTime, int speed);
     bool send(std::vector<std::vector<int>> goalPos);
     bool send(std::vector<std::vector<int>> goalPos, int _speed, int _speed_min,        bool useCheck);
     void init();

@@ -20,9 +20,9 @@
 #include "BluetoothHandler.h"
 #include "Vision.h"
 
-enum class State { MENU, LIMBO, GRINDBAK, RACE, DANS, GAP, PRIK, PAALDANS, PAREN};
+enum class State { MENU, LIMBO, GRINDBAK, RACE, DANS, GAP, PRIK, PAALDANS, PAREN, SETTINGS};
 
-static const std::string stateNames[9] = { "MENU", "LIMBO", "GRINDBAK", "RACE", "DANS", "GAP", "PRIK", "PAALDANS", "PAREN" };
+static const std::string stateNames[10] = { "MENU", "LIMBO", "GRINDBAK", "RACE", "DANS", "GAP", "PRIK", "PAALDANS", "PAREN", "SETTINGS" };
 
 class Controller {
 private:

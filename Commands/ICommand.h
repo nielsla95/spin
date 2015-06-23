@@ -10,6 +10,7 @@
 #include <iostream>
 #include "../ServoDriver.h"
 #include "../Models/ControlData.h"
+#include "../Models/SensorData.h"
 
 class ICommand {
 public:
@@ -19,9 +20,14 @@ public:
 
     ServoDriver *servoDriver;
     ControlData *controlData = nullptr;
+    SensorData *sensorData= nullptr;
+    int *x;
+    int *y;
 
     ICommand(ServoDriver *servoDriver) : servoDriver(servoDriver) {}
     ICommand(ServoDriver *servoDriver, ControlData *controlData) : servoDriver(servoDriver), controlData(controlData) { }
+    ICommand(ServoDriver *servoDriver, SensorData *sensorData) : servoDriver(servoDriver), sensorData(sensorData) { }
+    ICommand(ServoDriver *servoDriver, SensorData *sensorData,int *x, int *y) : servoDriver(servoDriver), sensorData(sensorData), x(x), y(y) { }
 
     virtual void init()=0;
 

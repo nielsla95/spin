@@ -7,16 +7,21 @@
 #include "Controller.h"
 #include "Gonio.h"
 #include "Commands/GrindCommand.h"
+#include "Commands/LimboCommand.h"
+#include "Commands/RaceCommand.h"
+#include "Commands/SettingsCommand.h"
 
 Controller::Controller() {
     ControlData controlData;
     controlData.set(512,512,512,100,1,false,0);
     ControlData lastControlData;
     lastControlData.set(512,512,512,100,1,false,0);
+    bool interrupted = false;
     state = State::MENU;
     lastState = State::GRINDBAK; //Dit doen we om de init aan te roepen bij het opstarten
     bool isRunning = true;
 
+    std::vector<int> servoData;
     SensorData sensorData;
     Monitor monitor(std::ref(sensorData));
 
@@ -24,20 +29,23 @@ Controller::Controller() {
     int visionY = 0;//				vision
 
     BluetoothHandler bluetoothHandler(std::ref(controlData));
-    //Vision vis(&visionX,&visionY); //	vision
+    Vision vis(&visionX,&visionY); //	vision
 
-    ServoDriver servoDriver;
+    ServoDriver servoDriver(&servoData);
 
-    //ServerHandler server(std::ref(sensorData),std::ref(controlData));
+    ServerHandler server(std::ref(sensorData),std::ref(controlData),&servoData);
     WalkCommand walkCommand(&servoDriver, &controlData);
-    PoleCommand poleCommand(&servoDriver);
+    PoleCommand poleCommand(&servoDriver, &sensorData);
     GapCommand gapCommand(&servoDriver);
     GrindCommand grindCommand(&servoDriver, &controlData);
-    BalloonCommand balloonCommand(&servoDriver);
+    BalloonCommand balloonCommand(&servoDriver,&sensorData,&visionX,&visionY);
     DanceCommand danceCommand(&servoDriver);
+    LimboCommand limboCommand(&servoDriver);
+    RaceCommand raceCommand(&servoDriver);
+    SettingsCommand settingsCommand(&servoDriver, &controlData);
 
     while (isRunning) {
-        isRunning = !controlData.killSwitch;
+        //isRunning = !controlData.killSwitch;
         // CUSTOM CONTROL //
 
         std::cout << "VOER JE MODER IN: " << std::endl;
@@ -49,7 +57,7 @@ Controller::Controller() {
 
         ///////////////////////
         // BLUETOOTH CONTROL //
-//
+
 //        if((controlData.isNotEqual(lastControlData))){
 //            state = (State)controlData.mode;
 //            lastControlData = controlData;
@@ -59,39 +67,42 @@ Controller::Controller() {
         //////////////////////////
 
         switch (state) {
-	        case State::MENU:
+	        case State::MENU: // 0
                 this->lastState = callCommand(&walkCommand);
                 break;
-            case State::LIMBO:
-                this->lastState = callCommand(&danceCommand);
+            case State::LIMBO: //1
+                this->lastState = callCommand(&limboCommand);
                 break;
-            case State::GRINDBAK:
+            case State::GRINDBAK: // 2
                 this->lastState = callCommand(&grindCommand);
                 break;
-            case State::RACE:
+            case State::RACE: // 3
+                this->lastState = callCommand(&raceCommand);
+                break;
+            case State::DANS: // 4
                 this->lastState = callCommand(&danceCommand);
                 break;
-            case State::DANS:
-                this->lastState = callCommand(&danceCommand);
-                break;
-            case State::GAP: 
+            case State::GAP: // 5
 		        this->lastState = callCommand(&gapCommand);
 		        break;
-            case State::PRIK:
+            case State::PRIK: // 6
                 this->lastState = callCommand(&balloonCommand);
                 break;
-            case State::PAALDANS:
+            case State::PAALDANS: // 7
 		        this->lastState = callCommand(&poleCommand);
 		        break;
-            case State::PAREN:
-                this->lastState = callCommand(&danceCommand);
+            case State::PAREN: // 8
+                this->lastState = callCommand(&walkCommand);
                 break;
-
+            case State::SETTINGS: // 9
+                this->lastState = callCommand(&settingsCommand);
+                break;
             default:
                 std::cout << "U r a wizzart, how u get here? Bud how you leave here!??" << std::endl;
                 break;
         }
     }
+    std::cout << "KILLSWITCH OH NOES" << std::endl;
 }
 
 State Controller::callCommand(ICommand *command)

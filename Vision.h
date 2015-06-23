@@ -16,7 +16,7 @@ using namespace std;
 using namespace std::chrono;
 using namespace cv;
 class Vision {
- 
+
 public:
     Mat image;
     Mat image2;
@@ -33,7 +33,7 @@ public:
     std::thread visionThread;
 
     Vision(int *x, int *y) :x(x), y(y) {
-       visionThread = std::thread(&Vision::startVision,this);
+        visionThread = std::thread(&Vision::startVision,this);
     }
 
     virtual ~Vision() { visionThread.join(); }
@@ -45,9 +45,9 @@ public:
     void liveStream();
     void startVision();
 
+
 private:
 
 };
- 
-#endif
 
+#endif

@@ -22,7 +22,7 @@ public:
     float gyX;
     float gyY;
     float gyZ;
-
+    float dist;
 
     SensorData()
     {
@@ -32,6 +32,7 @@ public:
         gyX = 0.00f;
         gyY = 0.00f;
         gyZ = 0.00f;
+        dist = 0.00f;
     }
 
     void set(const std::string &input)
@@ -69,11 +70,15 @@ public:
                     case 6:
                         gyZ = std::stof(token.c_str());
                         break;
+                    case 7:
+                        dist = std::stof(token.c_str());
+                        break;
                     default:
                         break;
                 }
                 argCounter++;
             }
+            std::cout << "VOltage: "<< voltage << " Ampere: "<< ampere << " temp: "<< temp << " gyX: "<< gyX << " gyy: "<< gyY << " gyz: "<< gyZ<< " dist: "<< dist << std::endl;
         }
         else{
             std::cout << "wrong sensor data: " << input << std::endl;
@@ -93,7 +98,7 @@ public:
         for (int i = 1; i < input.length()-1; ++i) {
             if(input[i]==',') commaCounter++;
         }
-        return commaCounter == 5;\
+        return commaCounter == 6;\
     }
 
 };

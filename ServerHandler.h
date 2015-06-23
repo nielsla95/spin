@@ -13,9 +13,9 @@
 class ServerHandler {
 private:
 public:
-    ServerHandler(SensorData &sensorData, ControlData &controlData) {
+    ServerHandler(SensorData &sensorData, ControlData &controlData, std::vector<int>  *servoData) {
         serverThread = std::thread(&ServerHandler::start,this);
-        dataToJSON(sensorData, controlData);
+        dataToJSON(sensorData, controlData, servoData);
     }
     std::thread serverThread;
     AppServer server;
@@ -23,7 +23,7 @@ public:
 
     void start();
 
-    void dataToJSON(SensorData &sensorData, ControlData &controlData);
+    void dataToJSON(SensorData &sensorData, ControlData &controlData, std::vector<int>  *servoData);
 };
 
 
