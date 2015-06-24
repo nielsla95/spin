@@ -6,19 +6,23 @@
 
 void ServerHandler::start() {
 
-    updateThread = std::thread(&ServerHandler::sendValues, this, std::ref(server));
-
+    retry:
+    std::cout << "Web Socket trying to connect..." << std::endl;
     try{
+        updateThread = std::thread(&ServerHandler::sendValues, this, std::ref(server));
         server.run(9005);
     } catch(const std::exception &e) {
-        std::cout << "Web Socket server couldn't be started!" << std::endl;
+        std::cout << "Web Socket server couldn't be started! let's restart" << std::endl;
+        updateThread.join();
+        sleep(5);
+        goto retry;
     }
 
 }
 
 void ServerHandler::sendValues(AppServer &server)
 {
-    std::cout << "SEND CRAP LOOP INITZ" << std::endl;
+    //std::cout << "SEND CRAP LOOP INITZ" << std::endl;
     while(true) {
         if (server.hdlReady) {
 
@@ -60,12 +64,14 @@ std::string ServerHandler::dataToJSON(SensorData &sensorData, ControlData &contr
 //    ControlData controlData = *controlDataz;
 //    std::vector<int> servoData = *servoDataz;
 
-    std::cout << "JA IK BEREIK LEUKE CODE "<<std::endl;
+    std::cout << "servo data length: " << servoData.size() << std::endl;
+    std::cout << "servo data pointer: " << &servoData << std::endl;
+    //std::cout << "JA IK BEREIK LEUKE CODE "<<std::endl;
     std::vector<int> testServoData = servoData;
     for (int i = 0; i < testServoData.size(); ++i) {
         std::cout << "JA JOEPIE: " << testServoData.at(i) << std::endl;
     }
-    std::cout << "size = 0 ;( "<<std::endl;
+    //std::cout << "size = 0 ;( "<<std::endl;
     std::string result;
     // convert to json string
 
@@ -105,8 +111,48 @@ std::string ServerHandler::dataToJSON(SensorData &sensorData, ControlData &contr
     result += "},";
 
     //Add the results from the legs
-    //result += "\"Leg\"":[ { "Temperature":183, "Servo": [ {"id":1, "rotation":199, "temperature":116}, {"id":2, "rotation":80, "temperature":307}, {"id":3, "rotation":216, "temperature":97} ] }, { "Temperature":14, "Servo": [ {"id":1, "rotation":198, "temperature":274}, {"id":2, "rotation":312, "temperature":203}, {"id":3, "rotation":114, "temperature":285} ] }, { "Temperature":179, "Servo": [ {"id":1, "rotation":292, "temperature":284}, {"id":2, "rotation":299, "temperature":47}, {"id":3, "rotation":5, "temperature":31} ] }, { "Temperature":98, "Servo": [ {"id":1, "rotation":292, "temperature":258}, {"id":2, "rotation":182, "temperature":305}, {"id":3, "rotation":339, "temperature":310} ] }, { "Temperature":162, "Servo": [ {"id":1, "rotation":166, "temperature":244}, {"id":2, "rotation":327, "temperature":344}, {"id":3, "rotation":171, "temperature":53} ] }, { "Temperature":223, "Servo": [ {"id":1, "rotation":67, "temperature":232}, {"id":2, "rotation":23, "temperature":54}, {"id":3, "rotation":26, "temperature":201} ] } ]};
     result += "\"Leg\":[";
+
+
+    /*try
+    {
+        std::vector<int> servoPos;
+        std::vector<int> servoTemp;
+        std::vector<int> servoRot;
+
+        for(int i = 0; i < servoData.size(); i++)
+        {
+            if(i <= 18)
+            {
+                servoPos.push_back(servoData[i]);
+            }
+            else if(i <= 36)
+            {
+                servoPos.push_back(servoTemp[i]);
+            }
+            else
+            {
+                servoPos.push_back(servoRot[i]);
+            }
+        }
+        //std::string &result, float temp, float r1, float t1, float r2, float t2, float r3, float t3, bool last)
+        for(int i = 0; i < 6; i++)
+        {
+            float temp = servoTemp[i] + servoTemp[i+1] + servoTemp[i+2];
+            bool isLast = i == 6;
+
+            createLeg(result, temp, servoRot[i], servoPos[i], servoRot[i+1], servoPos[i+1], servoRot[i+2], servoPos[i+2], isLast);
+        }
+    }
+    catch(std::exception e)
+    {
+        createLeg(result, 0, 0, 0, 0, 0, 0, 0, false);
+        createLeg(result, 0, 0, 0, 0, 0, 0, 0, false);
+        createLeg(result, 0, 0, 0, 0, 0, 0, 0, false);
+        createLeg(result, 0, 0, 0, 0, 0, 0, 0, false);
+        createLeg(result, 0, 0, 0, 0, 0, 0, 0, false);
+        createLeg(result, 0, 0, 0, 0, 0, 0, 0, true);
+    }*/
 
     createLeg(result, 0, 0, 0, 0, 0, 0, 0, false);
     createLeg(result, 0, 0, 0, 0, 0, 0, 0, false);

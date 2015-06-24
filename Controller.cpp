@@ -22,6 +22,9 @@ Controller::Controller() {
     bool isRunning = true;
 
     std::vector<int> servoData;
+    for(int i = 0; i < 18*3; i++)
+        servoData.push_back(0);
+
     SensorData sensorData;
     Monitor monitor(std::ref(sensorData));
 
@@ -44,6 +47,9 @@ Controller::Controller() {
     LimboCommand limboCommand(&servoDriver);
     RaceCommand raceCommand(&servoDriver);
     SettingsCommand settingsCommand(&servoDriver, &controlData);
+
+    std::cout << "init servo data length: " << servoData.size() << std::endl;
+    std::cout << "init servo data pointer: " << &servoData << std::endl;
 
     while (isRunning) {
         //isRunning = !controlData.killSwitch;

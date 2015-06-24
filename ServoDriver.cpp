@@ -96,18 +96,18 @@ void ServoDriver::getData() {
     // derde 18(36-55) waardes: ???
 
     std::vector<int> result;
-    for (int i = 0; i < 20; ++i) {
-        result.push_back(i);
+    //pos
+    for (int i = 1; i <= 18; i++) {
+        result.push_back(dxl_read_word(i, P_PRESENT_POSITION_L));
     }
-//    for (int i = 1; i <= 18; i++) {
-//        for (int i = 1; i <= 18; i++) {
-//            result.push_back(dxl_read_word(i, P_PRESENT_POSITION_L));
-//        }
-//        result.push_back(dxl_read_word(i, P_PRESENT_POSITION_L));
-//    }
-//    for (int i = 1; i <= 18; i++) {
-//        result.push_back(dxl_read_word(i, P_PRESENT_POSITION_L));
-//    }
+    //temp TODO: doit
+    for (int i = 1; i <= 18; i++) {
+        result.push_back(dxl_read_word(i, P_PRESENT_POSITION_L));
+    }
+
+    /*for (int i = 1; i <= 18; i++) {
+        result.push_back(dxl_read_word(i, P_PRESENT_POSITION_L));
+    }*/
 
     this->servoData = &result;
     std::cout <<" JOEPIE IK HEB DATA GESTUURD VIA GET DATA" << std::endl;
