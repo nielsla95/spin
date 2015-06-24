@@ -73,7 +73,7 @@ void Vision::liveStream()
 
 void Vision::startVision()// todo: WaitKey(0); achter imshow maakt het werkend :p
 {
-    bool recognizeBlue = true;
+
     cout << "vision gestart" << endl;
 
     if( erosion_elem == 0 ){ erosion_type = MORPH_RECT; }
@@ -120,7 +120,7 @@ void Vision::startVision()// todo: WaitKey(0); achter imshow maakt het werkend :
 
         cvtColor(image,image,CV_BGR2HSV);
 
-        if(recognizeBlue)
+        if(*balloon==1)
         {
             recognizeBlueBalloon();
         }

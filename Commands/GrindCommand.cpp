@@ -7,7 +7,6 @@
 
 void GrindCommand::init()
 {
-    // todo: wegcommenten
     //std::cout << "speed init " << controlData->speed << std::endl;
     servoDriver->send(Gonio("movegInit.csv").calcVars(),controlData->speed,controlData->speed,false);
 }

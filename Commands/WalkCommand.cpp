@@ -8,12 +8,9 @@
 
 void WalkCommand::init()
 {
-    // todo: wegcommenten
-
     // init in voorwaartse loop positie
     this->currCSV = "movefInit.csv";
     this->input = Gonio(currCSV).calcVars();
-    //usleep(2000000);
     servoDriver->sendSyncWrite(this->input,200000,300);
     this->lastCSV = currCSV;
     std::cout << "wc org init 1 : " << currCSV << std::endl;
@@ -45,7 +42,7 @@ void WalkCommand::run()
         // Zoja horizontaal bewegen
         if (dX > dY) {
             if (controlData->x < center) {
-                this->input = callCSV("moverInit.csv","mover.csv");
+                this->input = callCSV("moverGInit.csv","moverG.csv");
             } else {
                 this->input = callCSV("movelInit.csv","movel.csv");
             }

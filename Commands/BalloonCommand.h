@@ -11,8 +11,7 @@ class BalloonCommand : public ICommand{
 public:
 
 
-    BalloonCommand(ServoDriver *servoDriver, SensorData *sensorData, int *x, int *y) : ICommand(servoDriver, sensorData,
-                                                                                                x, y) { }
+    BalloonCommand(ServoDriver *servoDriver, SensorData *sensorData, int *x, int *y, int *balloon) : ICommand(servoDriver, sensorData, x, y, balloon) {}
 
     virtual void init() override;
 

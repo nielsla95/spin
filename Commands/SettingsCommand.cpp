@@ -11,16 +11,10 @@ SettingsCommand::SettingsCommand(ServoDriver *servoDriver, ControlData *controlD
 }
 
 void SettingsCommand::init() {
-    this->servoDriver->sendSyncWrite(Gonio("movedInit.csv").calcVars(),200000,300);
+
 }
 
 void SettingsCommand::run() {
-
-
-    //testing
-    this->servoDriver->sendSyncWrite(Gonio("moverGInit.csv").calcVars(),200000,300);
-    this->servoDriver->sendSyncWrite(Gonio("moverG.csv").calcVars(),200000,300);
-    // end testing
 
 // choose direction
 
@@ -36,15 +30,29 @@ void SettingsCommand::run() {
     int dY = 0;
     int center = 512;
 
-    if(controlData->y<350 || controlData-> y>650) {
+    if (controlData->x < 350 || controlData->x > 650 || controlData->y < 350 || controlData->y > 650) {
 
-        if (controlData->y > center) {
-            this->input = callCSV("moveuInit.csv","moveu.csv");
-        } else {
-            this->input = callCSV("movedInit.csv","moved.csv");
+        //Calculate the deltas
+        dX = (controlData->x <= center) ? center - controlData->x : controlData->x - center;
+        dY = (controlData->y <= center) ? center - controlData->y : controlData->y - center;
+
+        if (dX > dY) {
+            if (controlData->x > center) {
+                this->input = callCSV("turnlInit.csv", "turnl.csv");
+            } else {
+                this->input = callCSV("turnrInit.csv", "turnr.csv");
+            }
+        }else // Anders verticaal bewegen
+        {
+            if (controlData->y > center) {
+                this->input = callCSV("moveuInit.csv","moveu.csv");
+            } else {
+                this->input = callCSV("movedInit.csv","moved.csv");
+            }
         }
 
-        servoDriver->sendSyncWrite(this->input,200000,300);
+
+        servoDriver->sendSyncWrite(this->input, 200000, 300);
         this->lastCSV = this->currCSV;
     }
 }

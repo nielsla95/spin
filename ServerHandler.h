@@ -13,17 +13,22 @@
 class ServerHandler {
 private:
 public:
-    ServerHandler(SensorData &sensorData, ControlData &controlData, std::vector<int>  *servoData) {
+    SensorData *sensorData;
+    ControlData *controlData;
+    std::vector<int> *servoData;
+    ServerHandler(SensorData *sensorData, ControlData *controlData, std::vector<int>  *servoData):sensorData(sensorData),controlData(controlData),servoData(servoData) {
         serverThread = std::thread(&ServerHandler::start,this);
-        dataToJSON(sensorData, controlData, servoData);
     }
     std::thread serverThread;
+    std::thread updateThread;
     AppServer server;
-    virtual ~ServerHandler() { serverThread.join(); }
+    virtual ~ServerHandler() { serverThread.join();  updateThread.join(); }
 
+    void sendValues(AppServer &server);
     void start();
+    void createLeg(std::string &result, float temp, float r1, float t1, float r2, float t2, float r3, float t3, bool last);
 
-    void dataToJSON(SensorData &sensorData, ControlData &controlData, std::vector<int>  *servoData);
+    std::string dataToJSON(SensorData &sensorData, ControlData &controlData, std::vector<int> &servoData);
 };
 
 

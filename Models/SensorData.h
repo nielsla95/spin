@@ -40,7 +40,7 @@ public:
         // if string is validate assign items to member variables
         if(validate(input))
         {
-            std::string newInput = input.substr(1, input.length() - 1); // todo: crap
+            std::string newInput = input.substr(1, input.length() - 1);
             int endCharIndex = newInput.find('>');
             newInput = newInput.substr(0, endCharIndex);
 

@@ -29,10 +29,10 @@ public:
     std::vector<Vec4i> hierarchy;
     int *x;
     int *y;
-
+    int *balloon;
     std::thread visionThread;
 
-    Vision(int *x, int *y) :x(x), y(y) {
+    Vision(int *x, int *y, int *balloon) :x(x), y(y), balloon(balloon) {
         visionThread = std::thread(&Vision::startVision,this);
     }
 

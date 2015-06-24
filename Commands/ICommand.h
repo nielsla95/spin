@@ -23,11 +23,12 @@ public:
     SensorData *sensorData= nullptr;
     int *x;
     int *y;
+    int *balloon;
 
     ICommand(ServoDriver *servoDriver) : servoDriver(servoDriver) {}
     ICommand(ServoDriver *servoDriver, ControlData *controlData) : servoDriver(servoDriver), controlData(controlData) { }
     ICommand(ServoDriver *servoDriver, SensorData *sensorData) : servoDriver(servoDriver), sensorData(sensorData) { }
-    ICommand(ServoDriver *servoDriver, SensorData *sensorData,int *x, int *y) : servoDriver(servoDriver), sensorData(sensorData), x(x), y(y) { }
+    ICommand(ServoDriver *servoDriver, SensorData *sensorData,int *x, int *y,int *balloon) : servoDriver(servoDriver), sensorData(sensorData), x(x), y(y), balloon(balloon) { }
 
     virtual void init()=0;
 

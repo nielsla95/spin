@@ -29,16 +29,17 @@ Controller::Controller() {
     int visionY = 0;//				vision
 
     BluetoothHandler bluetoothHandler(std::ref(controlData));
-    Vision vis(&visionX,&visionY); //	vision
+    Vision vis(&visionX,&visionY,&controlData.balloon); //	vision
 
     ServoDriver servoDriver(&servoData);
 
-    ServerHandler server(std::ref(sensorData),std::ref(controlData),&servoData);
+    ServerHandler server(&sensorData,&controlData,&servoData);
+
     WalkCommand walkCommand(&servoDriver, &controlData);
     PoleCommand poleCommand(&servoDriver, &sensorData);
     GapCommand gapCommand(&servoDriver);
     GrindCommand grindCommand(&servoDriver, &controlData);
-    BalloonCommand balloonCommand(&servoDriver,&sensorData,&visionX,&visionY);
+    BalloonCommand balloonCommand(&servoDriver,&sensorData,&visionX,&visionY,&controlData.balloon);
     DanceCommand danceCommand(&servoDriver);
     LimboCommand limboCommand(&servoDriver);
     RaceCommand raceCommand(&servoDriver);
@@ -118,7 +119,5 @@ State Controller::callCommand(ICommand *command)
 	    //std::cout << "Running - state: " << stateNames[(int) state] << std::endl;
         command->run();
     }
-    // todo: sleep weghalen
-    //usleep(2000000);
     return state;
 }
